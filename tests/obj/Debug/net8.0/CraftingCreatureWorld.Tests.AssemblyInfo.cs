@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CraftingCreatureWorld.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a13c7507d2e6b5a48ba7ab5901bbbf3ef870a2a2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fea730f7390a16a5cc340b7b66f27484f4b29b45")]
 [assembly: System.Reflection.AssemblyProductAttribute("CraftingCreatureWorld.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CraftingCreatureWorld.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
