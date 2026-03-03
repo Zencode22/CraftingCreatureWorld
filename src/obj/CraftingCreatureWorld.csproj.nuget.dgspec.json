@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj": {}
+    "c:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj": {}
   },
   "projects": {
-    "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj": {
+    "c:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj",
+        "projectUniqueName": "c:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj",
         "projectName": "CraftingCreatureWorld",
-        "projectPath": "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj",
+        "projectPath": "c:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj",
         "packagesPath": "C:\\Users\\conno\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\obj\\",
+        "outputPath": "c:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\conno\\AppData\\Roaming\\NuGet\\NuGet.Config"

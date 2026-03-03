@@ -13,6 +13,7 @@ namespace CraftingCreatureWorld.UI.Menus
     {
         private readonly GameState _state;
         private readonly CreatureService _creatureService;
+        private readonly Random _random = new();
         
         public CreatureMenu(GameState state)
         {
@@ -88,12 +89,15 @@ namespace CraftingCreatureWorld.UI.Menus
                 creature.DisplayInfo();
                 Console.WriteLine($"\nSpecial Ability: {creature.GetSpecialAbility()}");
                 Console.WriteLine($"Daily Currency: {creature.DailyCurrency:C}");
+                Console.WriteLine($"Happiness: {creature.Happiness}%");
+                Console.WriteLine($"Hunger: {creature.HungerLevel}%");
                 
                 Console.WriteLine("\n=== CREATURE OPTIONS ===");
                 Console.WriteLine("1. Feed Creature");
-                Console.WriteLine("2. Back to Creature List");
+                Console.WriteLine("2. Play with Creature");
+                Console.WriteLine("3. Back to Creature List");
                 
-                Console.Write("\nEnter your choice (1-2): ");
+                Console.Write("\nEnter your choice (1-3): ");
                 string choice = Console.ReadLine()?.Trim() ?? "";
                 
                 switch (choice)
@@ -102,6 +106,9 @@ namespace CraftingCreatureWorld.UI.Menus
                         FeedCreature(creature);
                         break;
                     case "2":
+                        PlayWithCreature(creature);
+                        break;
+                    case "3":
                         viewingDetails = false;
                         break;
                     default:
@@ -109,6 +116,125 @@ namespace CraftingCreatureWorld.UI.Menus
                         InputHandler.WaitForKey();
                         break;
                 }
+            }
+        }
+        
+        private void PlayWithCreature(Creature creature)
+        {
+            ConsoleHelper.Clear();
+            ConsoleDisplay.ShowHeader($"PLAYING WITH {creature.Name.ToUpper()}");
+            
+            Console.WriteLine($"\nYou spend time playing with {creature.Name} the {creature.Type}...");
+            
+            // Different play interactions based on creature type
+            string playMessage = GetPlayMessage(creature);
+            Console.WriteLine(playMessage);
+            
+            // Calculate happiness boost (random between 5-15)
+            int happinessBoost = _random.Next(5, 16);
+            int oldHappiness = creature.Happiness;
+            creature.Happiness = Math.Min(100, creature.Happiness + happinessBoost);
+            
+            // Small chance to reduce hunger from playing (10% chance)
+            if (_random.Next(100) < 10)
+            {
+                int hungerReduction = _random.Next(5, 11);
+                creature.HungerLevel = Math.Max(0, creature.HungerLevel - hungerReduction);
+                ConsoleDisplay.ShowSuccess($"\n{creature.Name} got so distracted playing that they forgot they were hungry! (-{hungerReduction} hunger)");
+            }
+            
+            Console.WriteLine($"\nHappiness increased by {happinessBoost}%!");
+            Console.WriteLine($"{oldHappiness}% → {creature.Happiness}%");
+            
+            // Special reaction based on creature type
+            string reaction = GetHappinessReaction(creature);
+            Console.WriteLine($"\n{reaction}");
+            
+            // Recalculate daily currency since happiness changed
+            creature.GetType()
+                .GetMethod("CalculateDailyCurrency", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.Invoke(creature, null);
+            
+            ConsoleDisplay.ShowSuccess($"\n{creature.Name}'s daily value is now {creature.DailyCurrency:C}");
+            
+            InputHandler.WaitForKey();
+        }
+        
+        private string GetPlayMessage(Creature creature)
+        {
+            string[] playActivities;
+            
+            switch (creature.Type)
+            {
+                case CreatureType.Dragon:
+                    playActivities = new[]
+                    {
+                        $"You play fetch with a burning log - {creature.Name} catches it mid-air!",
+                        $"{creature.Name} teaches you to fly, though you mostly just hang on.",
+                        $"You have a contest to see who can breathe the biggest fireball. {creature.Name} wins, of course.",
+                        $"You polish {creature.Name}'s scales until they sparkle like gems.",
+                        $"{creature.Name} shows you their treasure hoard and lets you hold the shiniest coin."
+                    };
+                    break;
+                    
+                case CreatureType.Elf:
+                    playActivities = new[]
+                    {
+                        $"{creature.Name} teaches you an ancient Elvish dance under the starlight.",
+                        $"You have an archery contest - {creature.Name} generously only beats you by 10 points.",
+                        $"You listen to {creature.Name} sing hauntingly beautiful Elvish songs.",
+                        $"{creature.Name} shows you how to walk without leaving footprints.",
+                        $"You play a game of riddles with {creature.Name} in the ancient forest."
+                    };
+                    break;
+                    
+                case CreatureType.Goblin:
+                    playActivities = new[]
+                    {
+                        $"You play hide and seek with {creature.Name}. They're suspiciously good at hiding.",
+                        $"{creature.Name} challenges you to a game of " + '"' + "who can collect the most shiny rocks." + '"',
+                        $"You tell each other scary stories. {creature.Name}'s stories are actually pretty creepy.",
+                        $"You play tag through the caves. {creature.Name} cheats by using secret tunnels.",
+                        $"{creature.Name} shows you their collection of " + '"' + "found" + '"' + " items."
+                    };
+                    break;
+                    
+                default:
+                    playActivities = new[]
+                    {
+                        $"You play with {creature.Name} in the meadow.",
+                        $"{creature.Name} seems much happier after spending time with you.",
+                        $"You teach {creature.Name} a new game, and they catch on quickly."
+                    };
+                    break;
+            }
+            
+            return playActivities[_random.Next(playActivities.Length)];
+        }
+        
+        private string GetHappinessReaction(Creature creature)
+        {
+            if (creature.Happiness >= 90)
+            {
+                switch (creature.Type)
+                {
+                    case CreatureType.Dragon:
+                        return $"{creature.Name} purrs contentedly, sending small smoke rings into the air.";
+                    case CreatureType.Elf:
+                        return $"{creature.Name} hums a happy tune that makes the flowers bloom around you.";
+                    case CreatureType.Goblin:
+                        return $"{creature.Name} does a little jig and offers you their favorite shiny rock.";
+                    default:
+                        return $"{creature.Name} snuggles up to you, happy and content.";
+                }
+            }
+            else if (creature.Happiness >= 70)
+            {
+                return $"{creature.Name} gives you a warm, appreciative look.";
+            }
+            else
+            {
+                return $"{creature.Name} seems a bit happier now, but could use more attention soon.";
             }
         }
         
