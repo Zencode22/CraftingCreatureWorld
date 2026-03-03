@@ -107,12 +107,12 @@ namespace CraftingCreatureWorld.UI.Menus
         
         private string GetFoodEffect(string foodName)
         {
-            if (foodName.Contains("Chocolate"))
-                return "[+20 Happiness, -10 Hunger]";
-            if (foodName.Contains("Bread"))
-                return "[-30 Hunger, +5 Happiness]";
-            if (foodName.Contains("Potion"))
-                return "[+25 Health, +10 Happiness]";
+            if (foodName.Contains("Hot Chocolate", System.StringComparison.OrdinalIgnoreCase))
+                return "[+20 Happiness, -10 Hunger, +5 Health] (Dragon only)";
+            if (foodName.Contains("Bread", System.StringComparison.OrdinalIgnoreCase))
+                return "[-30 Hunger, +5 Happiness] (Elf only)";
+            if (foodName.Contains("Jelly Beans", System.StringComparison.OrdinalIgnoreCase))
+                return "[-25 Hunger, +15 Happiness, +3 Health] (Goblin only)";
             return "";
         }
         
@@ -136,7 +136,11 @@ namespace CraftingCreatureWorld.UI.Menus
                 }
                 else
                 {
-                    ConsoleDisplay.ShowError("Failed to feed creature.");
+                    ConsoleDisplay.ShowError($"{creature.Name} the {creature.Type} won't eat {food.Item.Name}!");
+                    Console.WriteLine("\nAllowed foods:");
+                    Console.WriteLine("   Dragon -> Hot Chocolate");
+                    Console.WriteLine("   Elf -> Bread");
+                    Console.WriteLine("   Goblin -> Jelly Beans");
                 }
             }
             else

@@ -18,5 +18,6 @@ namespace CraftingEngine
         public static readonly Item Herb = Register(new Item("Herb", "pieces", 0.40m));
         public static readonly Item HealingPotion = Register(new Item("Healing Potion", "bottle", 3.00m, category: ItemCategory.Consumable));
         public static readonly Item Sugar = Register(new Item("Sugar", "cups", 0.60m));
+        public static readonly Item JellyBeans = Register(new Item("Jelly Beans", "handful", 1.80m, category: ItemCategory.Consumable));
     }
 }

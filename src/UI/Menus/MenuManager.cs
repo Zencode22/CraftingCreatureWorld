@@ -10,7 +10,6 @@ namespace CraftingCreatureWorld.UI.Menus
         private readonly CreatureMenu _creatureMenu;
         private readonly TraderMenu _traderMenu;
         private readonly CraftingMenu _craftingMenu;
-        private readonly FeedingMenu _feedingMenu;
         
         public MenuManager(GameState state)
         {
@@ -18,7 +17,6 @@ namespace CraftingCreatureWorld.UI.Menus
             _creatureMenu = new CreatureMenu(state);
             _traderMenu = new TraderMenu(state);
             _craftingMenu = new CraftingMenu(state);
-            _feedingMenu = new FeedingMenu(state);
         }
         
         public void DisplayMainMenu()
@@ -36,11 +34,10 @@ namespace CraftingCreatureWorld.UI.Menus
                 Console.WriteLine("1. Manage Your Creatures");
                 Console.WriteLine("2. Visit the Trader");
                 Console.WriteLine("3. Crafting Station");
-                Console.WriteLine("4. Feed Your Creatures");
-                Console.WriteLine("5. Save Game");
-                Console.WriteLine("6. Exit Game");
+                Console.WriteLine("4. Save Game");
+                Console.WriteLine("5. Exit Game");
                 
-                Console.Write("\nEnter your choice (1-6): ");
+                Console.Write("\nEnter your choice (1-5): ");
                 string input = Console.ReadLine()?.Trim() ?? "";
                 
                 switch (input)
@@ -55,12 +52,9 @@ namespace CraftingCreatureWorld.UI.Menus
                         _craftingMenu.Show();
                         break;
                     case "4":
-                        _feedingMenu.Show();
-                        break;
-                    case "5":
                         SaveGame();
                         break;
-                    case "6":
+                    case "5":
                         // user chose to exit
                         _state.IsGameOver = true;   // ensure outer game loop stops
                         inMenu = false;
@@ -72,8 +66,6 @@ namespace CraftingCreatureWorld.UI.Menus
                 }
             }
         }
-        
-
         
         private void SaveGame()
         {

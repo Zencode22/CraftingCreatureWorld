@@ -24,23 +24,28 @@ namespace CraftingCreatureWorld.Services
         {
             if (creature == null || food == null) return false;
             
-            if (food.Item.Name.Contains("Chocolate", System.StringComparison.OrdinalIgnoreCase))
+            // Check creature type and allow only their specific food
+            if (creature.Type == CreatureType.Dragon && 
+                food.Item.Name.Contains("Hot Chocolate", System.StringComparison.OrdinalIgnoreCase))
             {
                 creature.Happiness = System.Math.Min(100, creature.Happiness + 20);
                 creature.HungerLevel = System.Math.Max(0, creature.HungerLevel - 10);
                 creature.Health = System.Math.Min(100, creature.Health + 5);
                 return true;
             }
-            else if (food.Item.Name.Contains("Bread", System.StringComparison.OrdinalIgnoreCase))
+            else if (creature.Type == CreatureType.Elf && 
+                     food.Item.Name.Contains("Bread", System.StringComparison.OrdinalIgnoreCase))
             {
                 creature.HungerLevel = System.Math.Max(0, creature.HungerLevel - 30);
                 creature.Happiness = System.Math.Min(100, creature.Happiness + 5);
                 return true;
             }
-            else if (food.Item.Name.Contains("Potion", System.StringComparison.OrdinalIgnoreCase))
+            else if (creature.Type == CreatureType.Goblin && 
+                     food.Item.Name.Contains("Jelly Beans", System.StringComparison.OrdinalIgnoreCase))
             {
-                creature.Health = System.Math.Min(100, creature.Health + 25);
-                creature.Happiness = System.Math.Min(100, creature.Happiness + 10);
+                creature.HungerLevel = System.Math.Max(0, creature.HungerLevel - 25);
+                creature.Happiness = System.Math.Min(100, creature.Happiness + 15);
+                creature.Health = System.Math.Min(100, creature.Health + 3);
                 return true;
             }
             

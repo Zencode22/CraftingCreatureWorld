@@ -16,6 +16,7 @@ namespace CraftingEngine
             var h = GameItems.Herb;
             var hp = GameItems.HealingPotion;
             var s = GameItems.Sugar;
+            var jb = GameItems.JellyBeans;
 
             var hotChocolateRecipe = new Recipe(
                 name: "Hot Chocolate",
@@ -48,14 +49,14 @@ namespace CraftingEngine
                 },
                 isStarter: true);
 
-            var sweetHotChocolateRecipe = new Recipe(
-                name: "Sweet Hot Chocolate",
-                result: new Result(hc, 12m),
+            var jellyBeansRecipe = new Recipe(
+                name: "Jelly Beans",
+                result: new Result(jb, 8m),
                 ingredients: new[]
                 {
-                    new Ingredient(m, 4m),
-                    new Ingredient(cc, 0.5m),
-                    new Ingredient(s, 0.25m)
+                    new Ingredient(s, 0.5m),
+                    new Ingredient(m, 0.5m),
+                    new Ingredient(f, 0.3m)
                 },
                 isStarter: false);
 
@@ -64,7 +65,7 @@ namespace CraftingEngine
                 hotChocolateRecipe,
                 breadRecipe,
                 potionRecipe,
-                sweetHotChocolateRecipe
+                jellyBeansRecipe
             };
         }
         
