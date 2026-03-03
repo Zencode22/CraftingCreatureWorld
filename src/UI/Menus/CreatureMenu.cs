@@ -81,8 +81,7 @@ namespace CraftingCreatureWorld.UI.Menus
             Console.WriteLine($"\nSpecial Ability: {creature.GetSpecialAbility()}");
             Console.WriteLine($"Daily Currency: {creature.DailyCurrency:C}");
             
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey();
+            InputHandler.WaitForKey();
         }
         
         private string GetBar(int value, int length)
