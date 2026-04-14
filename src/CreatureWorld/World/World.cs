@@ -59,11 +59,18 @@ namespace CreatureWorld
         public void DisplayCreatureCountByType()
         {
             Console.WriteLine($"\n=== Creature Population in {WorldName} ===\n");
-            
+    
             foreach (CreatureType type in Enum.GetValues(typeof(CreatureType)))
             {
                 int count = creatures.FindAll(c => c.Type == type).Count;
-                Console.WriteLine($"{type}s: {count}");
+                string typeName = type switch
+                {
+                    CreatureType.Dragon => "Dragons",
+                    CreatureType.Fairy => "Fairies",
+                    CreatureType.Goblin => "Goblins",
+                    _ => type.ToString() + "s"
+                };
+                Console.WriteLine($"{typeName}: {count}");
             }
         }
         

@@ -2,25 +2,25 @@ using System;
 
 namespace CreatureWorld
 {
-    public class Elf : Creature
+    public class Fairy : Creature
     {
         public BowType BowType { get; set; }
         
-        public Elf(string name, int age, int health, BowType bowType) 
+        public Fairy(string name, int age, int health, BowType bowType) 
             : base(name, age, health)
         {
-            Type = CreatureType.Elf;
+            Type = CreatureType.Fairy;
             BowType = bowType;
         }
         
         public override void MakeSound()
         {
-            Console.WriteLine($"{Name} speaks in melodic Elvish: 'Nae saian luume!'");
+            Console.WriteLine($"{Name} giggles with a tinkling sound like tiny bells: 'Tee-hee-hee!'");
         }
         
         public override void Move()
         {
-            Console.WriteLine($"{Name} moves silently through the forest with grace and precision.");
+            Console.WriteLine($"{Name} flutters through the air leaving a trail of sparkling fairy dust.");
         }
         
         public override void DisplayInfo()
@@ -31,12 +31,12 @@ namespace CreatureWorld
         
         public override string GetSpecialAbility()
         {
-            return "Master Archer - Finds rare ingredients when exploring";
+            return "Forest Magic - Finds rare ingredients when exploring";
         }
         
         public void ShootArrow()
         {
-            Console.WriteLine($"{Name} fires an arrow from their {BowType} with deadly accuracy!");
+            Console.WriteLine($"{Name} fires a tiny arrow from their {BowType} with surprising accuracy!");
         }
         
         protected override void CalculateDailyCurrency()

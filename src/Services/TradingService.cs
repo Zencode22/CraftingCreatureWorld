@@ -55,7 +55,6 @@ namespace CraftingCreatureWorld.Services
         
         public void RestockTrader()
         {
-            // Simple restocking logic
             _state.Trader!.Inventory.Add(GameItems.Milk.Id.ToString(), 5);
             _state.Trader.Inventory.Add(GameItems.Flour.Id.ToString(), 5);
             _state.Trader.Inventory.Add(GameItems.Herb.Id.ToString(), 3);

@@ -11,10 +11,12 @@ namespace CraftingCreatureWorld.UI.Menus
     {
         private readonly GameState _state;
         private readonly CraftingService _craftingService;
+        private readonly DayService _dayService;
         
-        public CraftingMenu(GameState state)
+        public CraftingMenu(GameState state, DayService dayService)
         {
             _state = state;
+            _dayService = dayService;
             _craftingService = new CraftingService(state);
         }
         
@@ -38,14 +40,20 @@ namespace CraftingCreatureWorld.UI.Menus
                     var recipe = recipes[i];
                     bool canCraft = recipe.CanCraft(_state.Player.Inventory);
                     
-                    Console.Write($"{i + 1}. {recipe.Name} - {recipe.Result}");
+                    string creatureInfo = recipe.TargetCreature != "All" 
+                        ? $" [Best for: {recipe.TargetCreature}]" 
+                        : " [For all creatures]";
+                    
+                    Console.Write($"{i + 1}. {recipe.Name}{creatureInfo} - {recipe.Result}");
                     
                     if (canCraft)
                         ConsoleDisplay.ShowSuccess("(Craftable)");
                     else
                         ConsoleDisplay.ShowError("(Missing ingredients)");
                     
-                    Console.WriteLine($"   Needs: {string.Join(", ", recipe.Ingredients.Select(i => i.ToString()))}");
+                    string effectDescription = recipe.GetEffectDescription();
+                    Console.WriteLine($"   Effect: {effectDescription}");
+                    Console.WriteLine($"   Ingredients: {string.Join(", ", recipe.Ingredients.Select(i => i.ToString()))}");
                 }
                 
                 Console.WriteLine($"\n{recipes.Count + 1}. Return to Main Menu");
@@ -60,7 +68,11 @@ namespace CraftingCreatureWorld.UI.Menus
                     else if (choice > 0 && choice <= recipes.Count)
                     {
                         var selectedRecipe = recipes[choice - 1];
-                        AttemptCraft(selectedRecipe);
+                        bool crafted = AttemptCraft(selectedRecipe);
+                        if (crafted)
+                        {
+                            inCrafting = false;
+                        }
                     }
                     else
                     {
@@ -89,12 +101,23 @@ namespace CraftingCreatureWorld.UI.Menus
             }
         }
         
-        private void AttemptCraft(Recipe recipe)
+        private bool AttemptCraft(Recipe recipe)
         {
             ConsoleHelper.Clear();
             ConsoleDisplay.ShowHeader($"CRAFTING: {recipe.Name}");
             
             Console.WriteLine($"Result: {recipe.Result}");
+            
+            if (recipe.TargetCreature != "All")
+            {
+                ConsoleDisplay.ShowInfo($"🎯 Best fed to: {recipe.TargetCreature}");
+                Console.WriteLine($"   Effect when fed to {recipe.TargetCreature}: {recipe.GetEffectDescription()}");
+            }
+            else
+            {
+                Console.WriteLine($"   Effect: {recipe.GetEffectDescription()}");
+            }
+            
             Console.WriteLine("\nRequired Ingredients:");
             
             foreach (var ing in recipe.Ingredients)
@@ -112,13 +135,18 @@ namespace CraftingCreatureWorld.UI.Menus
             {
                 if (_craftingService.CraftRecipe(recipe))
                 {
-                    ConsoleDisplay.ShowSuccess($"Successfully crafted {recipe.Result}!");
+                    ConsoleDisplay.ShowSuccess($"\nSuccessfully crafted {recipe.Result}!");
                     
-                    // Generate instructions
                     string instructions = _craftingService.GenerateCraftingInstructions(recipe);
                     string filePath = "crafting_instructions.txt";
                     System.IO.File.WriteAllText(filePath, instructions);
                     ConsoleDisplay.ShowInfo($"Crafting instructions saved to {filePath}");
+                    
+                    InputHandler.WaitForKey();
+                    
+                    _dayService.AdvanceToNextDay("crafted an item");
+                    
+                    return true;
                 }
                 else
                 {
@@ -131,6 +159,7 @@ namespace CraftingCreatureWorld.UI.Menus
             }
             
             InputHandler.WaitForKey();
+            return false;
         }
     }
 }

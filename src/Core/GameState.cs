@@ -11,6 +11,7 @@ namespace CraftingCreatureWorld.Core
         public World GameWorld { get; set; }
         public int CurrentDay { get; private set; } = 1;
         public bool IsGameOver { get; set; }
+        public string? GameOverReason { get; set; }
         
         public GameState(string playerName)
         {

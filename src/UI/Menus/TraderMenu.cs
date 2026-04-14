@@ -12,10 +12,12 @@ namespace CraftingCreatureWorld.UI.Menus
     {
         private readonly GameState _state;
         private readonly TradingService _tradingService;
+        private readonly DayService _dayService;
         
-        public TraderMenu(GameState state)
+        public TraderMenu(GameState state, DayService dayService)
         {
             _state = state;
+            _dayService = dayService;
             _tradingService = new TradingService(state);
         }
         
@@ -60,7 +62,11 @@ namespace CraftingCreatureWorld.UI.Menus
                         var (item, price, stock) = items[choice - 1];
                         if (stock > 0)
                         {
-                            BuyItem(item, price);
+                            bool purchased = BuyItem(item, price);
+                            if (purchased)
+                            {
+                                inShop = false;
+                            }
                         }
                         else
                         {
@@ -77,19 +83,35 @@ namespace CraftingCreatureWorld.UI.Menus
             }
         }
         
-        private void BuyItem(Item item, decimal price)
+        private bool BuyItem(Item item, decimal price)
         {
             Console.Write($"How many {item.Unit} of {item.Name} would you like to buy? ");
             
             if (decimal.TryParse(Console.ReadLine(), out decimal amount) && amount > 0)
             {
-                if (_tradingService.BuyItem(item, amount))
+                decimal totalCost = price * amount;
+                string confirm = InputHandler.GetConfirmation($"\nPurchase {amount} {item.Unit} of {item.Name} for {totalCost:C}?");
+                
+                if (confirm == "Y")
                 {
-                    ConsoleDisplay.ShowSuccess($"Purchased {amount} {item.Unit} of {item.Name} for {price * amount:C}");
+                    if (_tradingService.BuyItem(item, amount))
+                    {
+                        ConsoleDisplay.ShowSuccess($"\nPurchased {amount} {item.Unit} of {item.Name} for {totalCost:C}");
+                        
+                        InputHandler.WaitForKey();
+                        
+                        _dayService.AdvanceToNextDay("purchased items from the merchant");
+                        
+                        return true;
+                    }
+                    else
+                    {
+                        ConsoleDisplay.ShowError("Insufficient currency or item out of stock!");
+                    }
                 }
                 else
                 {
-                    ConsoleDisplay.ShowError("Insufficient currency or item out of stock!");
+                    ConsoleDisplay.ShowInfo("Purchase cancelled.");
                 }
             }
             else
@@ -98,6 +120,7 @@ namespace CraftingCreatureWorld.UI.Menus
             }
             
             InputHandler.WaitForKey();
+            return false;
         }
         
         private void DisplayRecipes()
@@ -111,15 +134,18 @@ namespace CraftingCreatureWorld.UI.Menus
             {
                 Console.WriteLine($"\n{recipe.Name}");
                 Console.WriteLine($"   Result: {recipe.Result}");
-                Console.WriteLine($"   Ingredients: {string.Join(", ", recipe.Ingredients.Select(i => i.ToString()))}");
                 
-                // Show effect
-                if (recipe.Name.Contains("Chocolate"))
-                    Console.WriteLine("   Effect: +20 Happiness to all creatures");
-                else if (recipe.Name.Contains("Bread"))
-                    Console.WriteLine("   Effect: -30 Hunger to all creatures");
-                else if (recipe.Name.Contains("Potion"))
-                    Console.WriteLine("   Effect: +25 Health to a single creature");
+                if (recipe.TargetCreature != "All")
+                {
+                    Console.WriteLine($"   🎯 Best for: {recipe.TargetCreature}");
+                    Console.WriteLine($"   🍽️ Effect when fed to {recipe.TargetCreature}: {recipe.GetEffectDescription()}");
+                }
+                else
+                {
+                    Console.WriteLine($"   🍽️ Effect: {recipe.GetEffectDescription()}");
+                }
+                
+                Console.WriteLine($"   Ingredients: {string.Join(", ", recipe.Ingredients.Select(i => i.ToString()))}");
             }
             
             InputHandler.WaitForKey();

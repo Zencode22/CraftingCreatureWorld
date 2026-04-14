@@ -8,9 +8,11 @@ namespace CreatureWorld
         public int Age { get; set; }
         public int Health { get; set; }
         public int Happiness { get; set; } = 70;
-        public int HungerLevel { get; set; } = 30;
         public CreatureType Type { get; protected set; }
         public decimal DailyCurrency { get; protected set; }
+        
+        public int OldHealth { get; set; }
+        public int OldHappiness { get; set; }
         
         public Creature(string name, int age, int health)
         {
@@ -25,7 +27,7 @@ namespace CreatureWorld
             decimal baseRate = Type switch
             {
                 CreatureType.Dragon => 3.0m,
-                CreatureType.Elf => 2.5m,
+                CreatureType.Fairy => 2.5m,
                 CreatureType.Goblin => 2.0m,
                 _ => 1.0m
             };
@@ -34,6 +36,15 @@ namespace CreatureWorld
             decimal healthModifier = Health / 100m;
             
             DailyCurrency = Math.Round(baseRate * happinessModifier * healthModifier, 2);
+            
+            if (Health <= 0 && Happiness <= 0)
+            {
+                DailyCurrency = 0m;
+            }
+            else if (Health <= 0 || Happiness <= 0)
+            {
+                DailyCurrency = Math.Round(DailyCurrency * 0.5m, 2);
+            }
         }
         
         public virtual void MakeSound()
@@ -52,6 +63,7 @@ namespace CreatureWorld
             Console.WriteLine($"Type: {Type}");
             Console.WriteLine($"Age: {Age} years");
             Console.WriteLine($"Health: {Health}/100");
+            Console.WriteLine($"Happiness: {Happiness}/100");
         }
         
         public virtual string GetSpecialAbility()
@@ -61,19 +73,17 @@ namespace CreatureWorld
         
         public void EndOfDay()
         {
-            if (HungerLevel > 50)
-            {
-                Happiness = Math.Max(0, Happiness - 5);
-            }
-            
-            HungerLevel = Math.Min(100, HungerLevel + 10);
-            
             if (Health < 30)
             {
                 Happiness = Math.Max(0, Happiness - 3);
             }
             
             CalculateDailyCurrency();
+        }
+        
+        public bool IsAliveAndHappy()
+        {
+            return Health > 0 || Happiness > 0;
         }
         
         public override string ToString() => $"{Name} the {Type}";

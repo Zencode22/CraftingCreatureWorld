@@ -31,7 +31,7 @@ namespace CreatureWorld
         
         public override string GetSpecialAbility()
         {
-            return "Stealthy Sneak - Finds extra currency when not hungry";
+            return "Stealthy Sneak - Finds extra currency when healthy";
         }
         
         public void Steal()
@@ -42,7 +42,7 @@ namespace CreatureWorld
         protected override void CalculateDailyCurrency()
         {
             base.CalculateDailyCurrency();
-            if (HungerLevel < 30)
+            if (Health > 70)
             {
                 DailyCurrency = Math.Round(DailyCurrency * 1.4m, 2);
             }

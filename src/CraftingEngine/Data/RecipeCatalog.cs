@@ -26,7 +26,8 @@ namespace CraftingEngine
                     new Ingredient(m, 4m),
                     new Ingredient(cc, 0.5m)
                 },
-                isStarter: true);
+                isStarter: true,
+                targetCreature: "Dragon");
 
             var breadRecipe = new Recipe(
                 name: "Bread",
@@ -37,7 +38,8 @@ namespace CraftingEngine
                     new Ingredient(w, 1.5m),
                     new Ingredient(y, 0.02m)
                 },
-                isStarter: true);
+                isStarter: true,
+                targetCreature: "Fairy");
 
             var potionRecipe = new Recipe(
                 name: "Healing Potion",
@@ -47,7 +49,8 @@ namespace CraftingEngine
                     new Ingredient(h, 2m),
                     new Ingredient(w, 0.5m)
                 },
-                isStarter: true);
+                isStarter: true,
+                targetCreature: "All");
 
             var jellyBeansRecipe = new Recipe(
                 name: "Jelly Beans",
@@ -58,7 +61,8 @@ namespace CraftingEngine
                     new Ingredient(m, 0.5m),
                     new Ingredient(f, 0.3m)
                 },
-                isStarter: false);
+                isStarter: false,
+                targetCreature: "Goblin");
 
             return new List<Recipe>
             {
@@ -72,7 +76,7 @@ namespace CraftingEngine
         public static Recipe GetRecipeByName(string name)
         {
             var recipes = LoadStarterRecipes();
-            return recipes.Find(r => r.Name.Equals(name, StringComparison.OrdinalIgnoreCase)) 
+            return recipes.Find(r => r.Name.Equals(name, System.StringComparison.OrdinalIgnoreCase)) 
                    ?? recipes[0];
         }
     }

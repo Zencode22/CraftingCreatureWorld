@@ -52,7 +52,7 @@ namespace CraftingCreatureWorld.UI.Menus
             }
             catch (InvalidOperationException)
             {
-                // Console input is redirected or unavailable, skip the wait
+                
             }
         }
     }

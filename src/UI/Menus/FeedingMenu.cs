@@ -12,10 +12,12 @@ namespace CraftingCreatureWorld.UI.Menus
     {
         private readonly GameState _state;
         private readonly CreatureService _creatureService;
+        private readonly DayService _dayService;
         
-        public FeedingMenu(GameState state)
+        public FeedingMenu(GameState state, DayService dayService)
         {
             _state = state;
+            _dayService = dayService;
             _creatureService = new CreatureService(state);
         }
         
@@ -67,7 +69,11 @@ namespace CraftingCreatureWorld.UI.Menus
                         creatureChoice > 0 && creatureChoice <= _state.Player.Creatures.Count)
                     {
                         var selectedCreature = _state.Player.Creatures[creatureChoice - 1];
-                        FeedCreature(selectedCreature, selectedFood, foodChoice - 1);
+                        bool fed = FeedCreature(selectedCreature, selectedFood, foodChoice - 1);
+                        if (fed)
+                        {
+                            inFeeding = false;
+                        }
                     }
                     else
                     {
@@ -101,47 +107,52 @@ namespace CraftingCreatureWorld.UI.Menus
             {
                 var creature = _state.Player.Creatures[i];
                 Console.WriteLine($"   {i + 1}. {creature.Name} the {creature.Type} " +
-                    $"(Health {creature.Health}% | Happiness {creature.Happiness}% | Hunger {creature.HungerLevel}%)");
+                    $"(Health {creature.Health}% | Happiness {creature.Happiness}%)");
             }
         }
         
         private string GetFoodEffect(string foodName)
         {
-            if (foodName.Contains("Hot Chocolate", System.StringComparison.OrdinalIgnoreCase))
-                return "[+20 Happiness, -10 Hunger, +5 Health] (Dragon only)";
-            if (foodName.Contains("Bread", System.StringComparison.OrdinalIgnoreCase))
-                return "[-30 Hunger, +5 Happiness] (Elf only)";
-            if (foodName.Contains("Jelly Beans", System.StringComparison.OrdinalIgnoreCase))
-                return "[-25 Hunger, +15 Happiness, +3 Health] (Goblin only)";
+            if (foodName.Contains("Hot Chocolate", StringComparison.OrdinalIgnoreCase))
+                return "[+25 Health, +15 Happiness] (Dragon only)";
+            if (foodName.Contains("Bread", StringComparison.OrdinalIgnoreCase))
+                return "[+30 Health, +10 Happiness] (Fairy only)";
+            if (foodName.Contains("Jelly Beans", StringComparison.OrdinalIgnoreCase))
+                return "[+20 Health, +20 Happiness] (Goblin only)";
+            if (foodName.Contains("Healing Potion", StringComparison.OrdinalIgnoreCase))
+                return "[Restores Health and Happiness to maximum] (Any creature)";
             return "";
         }
         
-        private void FeedCreature(Creature creature, Result food, int foodIndex)
+        private bool FeedCreature(Creature creature, Result food, int foodIndex)
         {
             string confirm = InputHandler.GetConfirmation($"Feed {food} to {creature.Name}?");
             
             if (confirm == "Y")
             {
-                if (_creatureService.FeedCreature(creature, food))
-                {
-                    _state.Player.CraftedFood.RemoveAt(foodIndex);
-                    
-                    ConsoleDisplay.ShowSuccess($"{creature.Name} has been fed!");
-                    
-                    // Show updated stats
-                    Console.WriteLine($"\nUpdated Stats for {creature.Name}:");
-                    Console.WriteLine($"   Health: {creature.Health}%");
-                    Console.WriteLine($"   Happiness: {creature.Happiness}%");
-                    Console.WriteLine($"   Hunger: {creature.HungerLevel}%");
-                }
-                else
+                bool isValid = IsValidFoodForCreature(creature, food.Item.Name);
+                
+                if (!isValid)
                 {
                     ConsoleDisplay.ShowError($"{creature.Name} the {creature.Type} won't eat {food.Item.Name}!");
                     Console.WriteLine("\nAllowed foods:");
                     Console.WriteLine("   Dragon -> Hot Chocolate");
-                    Console.WriteLine("   Elf -> Bread");
+                    Console.WriteLine("   Fairy -> Bread");
                     Console.WriteLine("   Goblin -> Jelly Beans");
+                    Console.WriteLine("   Any -> Healing Potion");
+                    InputHandler.WaitForKey();
+                    return false;
                 }
+                
+                _state.Player.CraftedFood.RemoveAt(foodIndex);
+                
+                ConsoleDisplay.ShowSuccess($"{creature.Name} has been fed!");
+                
+                InputHandler.WaitForKey();
+                
+                _dayService.AdvanceToNextDay($"fed {creature.Name}", creature, food);
+                
+                return true;
             }
             else
             {
@@ -149,6 +160,17 @@ namespace CraftingCreatureWorld.UI.Menus
             }
             
             InputHandler.WaitForKey();
+            return false;
+        }
+        
+        private bool IsValidFoodForCreature(Creature creature, string foodName)
+        {
+            if (foodName.Contains("Healing Potion", StringComparison.OrdinalIgnoreCase))
+                return true;
+                
+            return (creature.Type == CreatureType.Dragon && foodName.Contains("Hot Chocolate", StringComparison.OrdinalIgnoreCase)) ||
+                   (creature.Type == CreatureType.Fairy && foodName.Contains("Bread", StringComparison.OrdinalIgnoreCase)) ||
+                   (creature.Type == CreatureType.Goblin && foodName.Contains("Jelly Beans", StringComparison.OrdinalIgnoreCase));
         }
     }
 }

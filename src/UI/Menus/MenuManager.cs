@@ -1,6 +1,6 @@
 using CraftingCreatureWorld.Core;
+using CraftingCreatureWorld.Services;
 using CraftingCreatureWorld.UI.Display;
-
 
 namespace CraftingCreatureWorld.UI.Menus
 {
@@ -10,13 +10,15 @@ namespace CraftingCreatureWorld.UI.Menus
         private readonly CreatureMenu _creatureMenu;
         private readonly TraderMenu _traderMenu;
         private readonly CraftingMenu _craftingMenu;
+        private readonly DayService _dayService;
         
         public MenuManager(GameState state)
         {
             _state = state;
-            _creatureMenu = new CreatureMenu(state);
-            _traderMenu = new TraderMenu(state);
-            _craftingMenu = new CraftingMenu(state);
+            _dayService = new DayService(state);
+            _creatureMenu = new CreatureMenu(state, _dayService);
+            _traderMenu = new TraderMenu(state, _dayService);
+            _craftingMenu = new CraftingMenu(state, _dayService);
         }
         
         public void DisplayMainMenu()
@@ -34,10 +36,9 @@ namespace CraftingCreatureWorld.UI.Menus
                 Console.WriteLine("1. Manage Your Creatures");
                 Console.WriteLine("2. Visit the Trader");
                 Console.WriteLine("3. Crafting Station");
-                Console.WriteLine("4. Save Game");
-                Console.WriteLine("5. Exit Game");
+                Console.WriteLine("4. Exit Game");
                 
-                Console.Write("\nEnter your choice (1-5): ");
+                Console.Write("\nEnter your choice (1-4): ");
                 string input = Console.ReadLine()?.Trim() ?? "";
                 
                 switch (input)
@@ -52,11 +53,7 @@ namespace CraftingCreatureWorld.UI.Menus
                         _craftingMenu.Show();
                         break;
                     case "4":
-                        SaveGame();
-                        break;
-                    case "5":
-                        // user chose to exit
-                        _state.IsGameOver = true;   // ensure outer game loop stops
+                        _state.IsGameOver = true;
                         inMenu = false;
                         break;
                     default:
@@ -65,13 +62,6 @@ namespace CraftingCreatureWorld.UI.Menus
                         break;
                 }
             }
-        }
-        
-        private void SaveGame()
-        {
-            // Simple save simulation
-            ConsoleDisplay.ShowSuccess("Game saved successfully!");
-            InputHandler.WaitForKey();
         }
     }
 }

@@ -15,13 +15,11 @@ namespace CraftingCreatureWorld.Entities
         
         private void InitializeInventory()
         {
-            // Add ingredients for the featured recipe (double the required amount)
             foreach (var ingredient in FeaturedRecipe.Ingredients)
             {
                 Inventory.Add(ingredient.Item.Id.ToString(), ingredient.Amount * 2);
             }
             
-            // Add common items with stock
             Inventory.Add(GameItems.Milk.Id.ToString(), StartingInventory.TRADER_MILK_STOCK);
             Inventory.Add(GameItems.Water.Id.ToString(), StartingInventory.TRADER_WATER_STOCK);
             Inventory.Add(GameItems.Flour.Id.ToString(), StartingInventory.TRADER_FLOUR_STOCK);

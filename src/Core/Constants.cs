@@ -3,15 +3,12 @@ namespace CraftingCreatureWorld.Core
     public static class Constants
     {
         public const string RECIPE_OUTPUT_FILE = "crafting_instructions.txt";
-        public const string SAVE_FILE = "savegame.json";
         
         public static class CreatureStats
         {
             public const int MAX_HEALTH = 100;
             public const int MAX_HAPPINESS = 100;
-            public const int MAX_HUNGER = 100;
             public const int BASE_HAPPINESS = 70;
-            public const int BASE_HUNGER = 30;
         }
         
         public static class Pricing

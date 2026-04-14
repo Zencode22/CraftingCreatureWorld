@@ -3,7 +3,7 @@ namespace CreatureWorld
     public enum CreatureType
     {
         Dragon,
-        Elf,
+        Fairy,
         Goblin
     }
     

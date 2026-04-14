@@ -17,11 +17,9 @@ namespace CraftingCreatureWorld.Utilities
         public static T NextEnum<T>() where T : Enum
         {
             var values = Enum.GetValues(typeof(T));
-            // GetValue returns object? so use null-forgiving operator after checking length.
             var obj = values.GetValue(_random.Next(values.Length));
             if (obj is null)
             {
-                // Should never happen since index is in range, but guard for nullability.
                 throw new InvalidOperationException("Unable to select a random enum value.");
             }
             return (T)obj;
