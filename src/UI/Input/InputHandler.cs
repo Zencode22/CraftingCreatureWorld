@@ -45,15 +45,8 @@ namespace CraftingCreatureWorld.UI.Menus
         
         public static void WaitForKey()
         {
-            try
-            {
-                Console.WriteLine("\nPress any key to continue...");
-                Console.ReadKey(true);
-            }
-            catch (InvalidOperationException)
-            {
-                
-            }
+            Console.WriteLine("\nPress any key to continue...");
+            ConsoleHelper.SafeReadKey();
         }
     }
 }

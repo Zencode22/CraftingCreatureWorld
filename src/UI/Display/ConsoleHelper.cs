@@ -13,15 +13,37 @@ namespace CraftingCreatureWorld.UI.Display
         {
             try
             {
-                Console.Clear();
+                if (!Console.IsOutputRedirected)
+                {
+                    Console.Clear();
+                }
             }
             catch (IOException)
             {
-                // occurs when no console is attached, ignore in tests
+                // occurs when no console is attached, ignore
             }
             catch (System.Security.SecurityException)
             {
                 // ignore if permissions forbid clearing
+            }
+        }
+        
+        public static void SafeReadKey()
+        {
+            try
+            {
+                if (!Console.IsInputRedirected)
+                {
+                    Console.ReadKey(true);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // Console input is redirected or unavailable, skip the wait
+            }
+            catch (Exception)
+            {
+                // Any other exception, skip the wait
             }
         }
     }

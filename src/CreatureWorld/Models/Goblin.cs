@@ -31,21 +31,12 @@ namespace CreatureWorld
         
         public override string GetSpecialAbility()
         {
-            return "Stealthy Sneak - Finds extra currency when healthy";
+            return "Stealthy Sneak - A cunning and resourceful creature";
         }
         
         public void Steal()
         {
             Console.WriteLine($"{Name} attempts to steal something shiny!");
-        }
-        
-        protected override void CalculateDailyCurrency()
-        {
-            base.CalculateDailyCurrency();
-            if (Health > 70)
-            {
-                DailyCurrency = Math.Round(DailyCurrency * 1.4m, 2);
-            }
         }
     }
 }

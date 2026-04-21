@@ -31,21 +31,12 @@ namespace CreatureWorld
         
         public override string GetSpecialAbility()
         {
-            return "Forest Magic - Finds rare ingredients when exploring";
+            return "Forest Magic - A delicate and magical creature";
         }
         
         public void ShootArrow()
         {
             Console.WriteLine($"{Name} fires a tiny arrow from their {BowType} with surprising accuracy!");
-        }
-        
-        protected override void CalculateDailyCurrency()
-        {
-            base.CalculateDailyCurrency();
-            if (Health > 90)
-            {
-                DailyCurrency = Math.Round(DailyCurrency * 1.3m, 2);
-            }
         }
     }
 }

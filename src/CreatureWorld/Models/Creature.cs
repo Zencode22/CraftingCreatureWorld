@@ -11,6 +11,7 @@ namespace CreatureWorld
         public CreatureType Type { get; protected set; }
         public decimal DailyCurrency { get; protected set; }
         
+        // Properties to store old values for display purposes
         public int OldHealth { get; set; }
         public int OldHappiness { get; set; }
         
@@ -22,28 +23,29 @@ namespace CreatureWorld
             CalculateDailyCurrency();
         }
         
-        protected virtual void CalculateDailyCurrency()
+        public virtual void CalculateDailyCurrency()
         {
+            // Fixed base rates per creature type
             decimal baseRate = Type switch
             {
-                CreatureType.Dragon => 3.0m,
-                CreatureType.Fairy => 2.5m,
-                CreatureType.Goblin => 2.0m,
-                _ => 1.0m
+                CreatureType.Dragon => 15.0m,
+                CreatureType.Fairy => 15.0m,  // All creatures should have the same base rate
+                CreatureType.Goblin => 15.0m, // All creatures should have the same base rate
+                _ => 15.0m
             };
             
-            decimal happinessModifier = Happiness / 100m;
-            decimal healthModifier = Health / 100m;
-            
-            DailyCurrency = Math.Round(baseRate * happinessModifier * healthModifier, 2);
-            
+            // Apply penalties for zero stats
             if (Health <= 0 && Happiness <= 0)
             {
-                DailyCurrency = 0m;
+                DailyCurrency = 0m; // No income when both are zero
             }
             else if (Health <= 0 || Happiness <= 0)
             {
-                DailyCurrency = Math.Round(DailyCurrency * 0.5m, 2);
+                DailyCurrency = Math.Round(baseRate * 0.5m, 2); // 50% penalty if either is zero
+            }
+            else
+            {
+                DailyCurrency = baseRate; // Full income when both stats are above 0
             }
         }
         
@@ -64,20 +66,18 @@ namespace CreatureWorld
             Console.WriteLine($"Age: {Age} years");
             Console.WriteLine($"Health: {Health}/100");
             Console.WriteLine($"Happiness: {Happiness}/100");
+            Console.WriteLine($"Daily Income: {DailyCurrency:C}");
         }
         
         public virtual string GetSpecialAbility()
         {
-            return "Basic creature ability";
+            return "A loyal companion";
         }
         
         public void EndOfDay()
         {
-            if (Health < 30)
-            {
-                Happiness = Math.Max(0, Happiness - 3);
-            }
-            
+            // No longer reduces happiness based on health
+            // Just recalculate currency for the next day
             CalculateDailyCurrency();
         }
         

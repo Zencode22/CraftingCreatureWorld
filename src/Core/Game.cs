@@ -51,7 +51,12 @@ namespace CraftingCreatureWorld.Core
         
         private void ShowGameOverMessage()
         {
-            ConsoleHelper.Clear();
+            try
+            {
+                ConsoleHelper.Clear();
+            }
+            catch { }
+            
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(@"
    _____                         ____                 
@@ -90,8 +95,36 @@ namespace CraftingCreatureWorld.Core
             ConsoleDisplay.ShowInfo($"\nYou survived for {State.CurrentDay} days.");
             ConsoleDisplay.ShowInfo($"You earned a total of {State.Player.Currency:C}.");
             Console.WriteLine();
-            Console.WriteLine("\nPress any key to exit...");
-            Console.ReadKey(true);
+            
+            // Check if we can read from console
+            if (!Console.IsInputRedirected)
+            {
+                Console.WriteLine("\nPress any key to exit...");
+                SafeReadKey();
+            }
+            else
+            {
+                Console.WriteLine("\nGame Over - Exiting...");
+            }
+        }
+        
+        private void SafeReadKey()
+        {
+            try
+            {
+                if (!Console.IsInputRedirected)
+                {
+                    Console.ReadKey(true);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // Console input is redirected or unavailable, just continue
+            }
+            catch (Exception)
+            {
+                // Any other exception, just continue
+            }
         }
     }
 }

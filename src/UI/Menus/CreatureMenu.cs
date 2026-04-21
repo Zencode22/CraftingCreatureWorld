@@ -141,11 +141,13 @@ namespace CraftingCreatureWorld.UI.Menus
     
             Console.WriteLine($"\nYou spend time playing with {creature.Name} the {creature.Type}...");
     
+            // Different play interactions based on creature type
             string playMessage = GetPlayMessage(creature);
             Console.WriteLine(playMessage);
     
-             InputHandler.WaitForKey();
+            InputHandler.WaitForKey();
     
+            // Advance to next day after playing
             _dayService.AdvanceToNextDay($"played with {creature.Name}", creature, null);
     
             return true;

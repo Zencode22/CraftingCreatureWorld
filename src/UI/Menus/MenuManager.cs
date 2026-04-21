@@ -25,7 +25,7 @@ namespace CraftingCreatureWorld.UI.Menus
         {
             bool inMenu = true;
             
-            while (inMenu)
+            while (inMenu && !_state.IsGameOver)
             {
                 ConsoleHelper.Clear();
                 ConsoleDisplay.ShowHeader($"DAY {_state.CurrentDay} - {_state.Player.Name}'s Adventure");
@@ -36,9 +36,10 @@ namespace CraftingCreatureWorld.UI.Menus
                 Console.WriteLine("1. Manage Your Creatures");
                 Console.WriteLine("2. Visit the Trader");
                 Console.WriteLine("3. Crafting Station");
-                Console.WriteLine("4. Exit Game");
+                Console.WriteLine("4. End Day Early");
+                Console.WriteLine("5. Exit Game");
                 
-                Console.Write("\nEnter your choice (1-4): ");
+                Console.Write("\nEnter your choice (1-5): ");
                 string input = Console.ReadLine()?.Trim() ?? "";
                 
                 switch (input)
@@ -53,6 +54,10 @@ namespace CraftingCreatureWorld.UI.Menus
                         _craftingMenu.Show();
                         break;
                     case "4":
+                        EndDayEarly();
+                        break;
+                    case "5":
+                        // user chose to exit
                         _state.IsGameOver = true;
                         inMenu = false;
                         break;
@@ -61,6 +66,39 @@ namespace CraftingCreatureWorld.UI.Menus
                         InputHandler.WaitForKey();
                         break;
                 }
+            }
+        }
+        
+        private void EndDayEarly()
+        {
+            ConsoleHelper.Clear();
+            ConsoleDisplay.ShowHeader("END DAY EARLY");
+            
+            Console.WriteLine("\nYou decide to call it a day early.");
+            Console.WriteLine("Your creatures will still earn currency, but their health and happiness will decrease.");
+            Console.WriteLine("\nCreature Status Preview:");
+            
+            // Show what will happen to each creature
+            foreach (var creature in _state.Player.Creatures)
+            {
+                Console.WriteLine($"\n  {creature.Name} the {creature.Type}:");
+                Console.WriteLine($"    Current Health: {creature.Health}% → Will decrease slightly");
+                Console.WriteLine($"    Current Happiness: {creature.Happiness}% → Will decrease slightly");
+                Console.WriteLine($"    Daily Income: {creature.DailyCurrency:C}");
+            }
+            
+            Console.WriteLine();
+            string confirm = InputHandler.GetConfirmation("Are you sure you want to end the day early?");
+            
+            if (confirm == "Y")
+            {
+                // Advance to next day without any interaction bonuses
+                _dayService.AdvanceToNextDay("ended the day early");
+            }
+            else
+            {
+                ConsoleDisplay.ShowInfo("Returning to main menu...");
+                InputHandler.WaitForKey();
             }
         }
     }

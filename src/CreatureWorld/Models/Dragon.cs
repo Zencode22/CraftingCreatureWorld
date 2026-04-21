@@ -31,21 +31,12 @@ namespace CreatureWorld
         
         public override string GetSpecialAbility()
         {
-            return $"Breathes {ElementType} - Generates more currency when happy";
+            return $"Breathes {ElementType} - A majestic and powerful creature";
         }
         
         public void BreatheElement()
         {
             Console.WriteLine($"{Name} breathes a powerful stream of {ElementType}!");
-        }
-        
-        protected override void CalculateDailyCurrency()
-        {
-            base.CalculateDailyCurrency();
-            if (Happiness > 80)
-            {
-                DailyCurrency = Math.Round(DailyCurrency * 1.5m, 2);
-            }
         }
     }
 }
