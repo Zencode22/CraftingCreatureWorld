@@ -55,6 +55,7 @@ namespace CraftingCreatureWorld.UI.Menus
                     }
                     else if (choice == items.Count + 1)
                     {
+                        ConsoleHelper.Clear();
                         DisplayRecipes();
                     }
                     else if (choice > 0 && choice <= items.Count)
@@ -62,10 +63,11 @@ namespace CraftingCreatureWorld.UI.Menus
                         var (item, price, stock) = items[choice - 1];
                         if (stock > 0)
                         {
+                            ConsoleHelper.Clear();
                             bool purchased = BuyItem(item, price);
                             if (purchased)
                             {
-                                inShop = false;
+                                inShop = false; // Return to main menu after purchase
                             }
                         }
                         else
@@ -85,6 +87,9 @@ namespace CraftingCreatureWorld.UI.Menus
         
         private bool BuyItem(Item item, decimal price)
         {
+            ConsoleDisplay.ShowHeader($"BUYING: {item.Name}");
+            Console.WriteLine($"\nPrice: {price:C} per {item.Unit}");
+            
             Console.Write($"How many {item.Unit} of {item.Name} would you like to buy? ");
             
             if (decimal.TryParse(Console.ReadLine(), out decimal amount) && amount > 0)
@@ -100,6 +105,7 @@ namespace CraftingCreatureWorld.UI.Menus
                         
                         InputHandler.WaitForKey();
                         
+                        // Advance to next day after purchasing
                         _dayService.AdvanceToNextDay("purchased items from the merchant");
                         
                         return true;
@@ -135,6 +141,7 @@ namespace CraftingCreatureWorld.UI.Menus
                 Console.WriteLine($"\n{recipe.Name}");
                 Console.WriteLine($"   Result: {recipe.Result}");
                 
+                // Show creature-specific info
                 if (recipe.TargetCreature != "All")
                 {
                     Console.WriteLine($"   🎯 Best for: {recipe.TargetCreature}");

@@ -1,0 +1,25 @@
+============================================================
+           CRAFTING INSTRUCTIONS
+============================================================
+
+RECIPE: Healing Potion
+----------------------------------------
+
+CRAFTING RESULT:
+   1 bottle Healing Potion
+
+INGREDIENTS REQUIRED:
+   - 2 pieces Herb
+   - 0.5 cups Water
+
+STEP-BY-STEP INSTRUCTIONS:
+
+   Step 1: Gather all required ingredients
+   Step 2: Verify you have all ingredients
+   Step 3: Prepare your crafting workspace
+   Step 4: Combine the ingredients carefully
+   Step 5: Complete the crafting process
+
+============================================================
+           HAPPY CRAFTING!
+============================================================

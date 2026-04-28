@@ -46,6 +46,7 @@ namespace CraftingCreatureWorld.UI.Menus
                     else if (choice > 0 && choice <= _state.Player.Creatures.Count)
                     {
                         var creature = _state.Player.Creatures[choice - 1];
+                        ConsoleHelper.Clear();
                         bool shouldReturnToMain = ViewCreatureDetails(creature);
                         if (shouldReturnToMain)
                         {
@@ -79,6 +80,20 @@ namespace CraftingCreatureWorld.UI.Menus
                 Console.WriteLine($"   Health: {healthBar} {creature.Health}%");
                 Console.WriteLine($"   Happiness: {happinessBar} {creature.Happiness}%");
                 Console.WriteLine($"   Daily Value: {creature.DailyCurrency:C}");
+                
+                // Show warnings for critical stats
+                if (creature.Health <= 0)
+                {
+                    ConsoleDisplay.ShowWarning($"   ⚠️ {creature.Name} has no health! Income reduced by 50%!");
+                }
+                if (creature.Happiness <= 0)
+                {
+                    ConsoleDisplay.ShowWarning($"   ⚠️ {creature.Name} is completely unhappy! Income reduced by 50%!");
+                }
+                if (creature.Health <= 0 && creature.Happiness <= 0)
+                {
+                    ConsoleDisplay.ShowError($"   ❌ {creature.Name} is generating NO income!");
+                }
             }
         }
         
@@ -91,11 +106,8 @@ namespace CraftingCreatureWorld.UI.Menus
                 ConsoleHelper.Clear();
                 ConsoleDisplay.ShowHeader(creature.Name);
                 
+                // Display creature info
                 creature.DisplayInfo();
-                Console.WriteLine($"\nSpecial Ability: {creature.GetSpecialAbility()}");
-                Console.WriteLine($"Daily Currency: {creature.DailyCurrency:C}");
-                Console.WriteLine($"Health: {creature.Health}%");
-                Console.WriteLine($"Happiness: {creature.Happiness}%");
                 
                 Console.WriteLine("\n=== CREATURE OPTIONS ===");
                 Console.WriteLine("1. Feed Creature");
@@ -108,6 +120,7 @@ namespace CraftingCreatureWorld.UI.Menus
                 switch (choice)
                 {
                     case "1":
+                        ConsoleHelper.Clear();
                         bool fed = FeedCreature(creature);
                         if (fed)
                         {
@@ -115,6 +128,7 @@ namespace CraftingCreatureWorld.UI.Menus
                         }
                         break;
                     case "2":
+                        ConsoleHelper.Clear();
                         bool played = PlayWithCreature(creature);
                         if (played)
                         {
@@ -138,18 +152,18 @@ namespace CraftingCreatureWorld.UI.Menus
         {
             ConsoleHelper.Clear();
             ConsoleDisplay.ShowHeader($"PLAYING WITH {creature.Name.ToUpper()}");
-    
+            
             Console.WriteLine($"\nYou spend time playing with {creature.Name} the {creature.Type}...");
-    
+            
             // Different play interactions based on creature type
             string playMessage = GetPlayMessage(creature);
             Console.WriteLine(playMessage);
-    
+            
             InputHandler.WaitForKey();
-    
+            
             // Advance to next day after playing
             _dayService.AdvanceToNextDay($"played with {creature.Name}", creature, null);
-    
+            
             return true;
         }
         
@@ -173,11 +187,11 @@ namespace CraftingCreatureWorld.UI.Menus
                 case CreatureType.Fairy:
                     playActivities = new[]
                     {
-                        $"{creature.Name} teaches you an ancient Elvish dance under the starlight.",
-                        $"You have an archery contest - {creature.Name} generously only beats you by 10 points.",
-                        $"You listen to {creature.Name} sing hauntingly beautiful Elvish songs.",
-                        $"{creature.Name} shows you how to walk without leaving footprints.",
-                        $"You play a game of riddles with {creature.Name} in the ancient forest."
+                        $"{creature.Name} teaches you to dance on flower petals without crushing them.",
+                        $"You watch {creature.Name} create beautiful patterns with fairy dust in the moonlight.",
+                        $"{creature.Name} leads you to a secret fairy ring where you play hide and seek.",
+                        $"You listen to {creature.Name} tell stories of ancient forest magic.",
+                        $"{creature.Name} shows you how to make wishes on dandelion seeds."
                     };
                     break;
                     
@@ -238,6 +252,7 @@ namespace CraftingCreatureWorld.UI.Menus
                     
                     if (confirm == "Y")
                     {
+                        // Check if the food is appropriate for this creature type (or if it's a healing potion)
                         bool isValidFood = IsValidFoodForCreature(creature, selectedFood.Item.Name);
                         
                         if (!isValidFood)
@@ -252,12 +267,14 @@ namespace CraftingCreatureWorld.UI.Menus
                             return false;
                         }
                         
+                        // Remove the food from inventory
                         _state.Player.CraftedFood.RemoveAt(foodChoice - 1);
                         
                         ConsoleDisplay.ShowSuccess($"\n{creature.Name} enjoys the {selectedFood.Item.Name}!");
                         
                         InputHandler.WaitForKey();
                         
+                        // Advance to next day after feeding
                         _dayService.AdvanceToNextDay($"fed {creature.Name}", creature, selectedFood);
                         
                         return true;
@@ -281,9 +298,11 @@ namespace CraftingCreatureWorld.UI.Menus
         
         private bool IsValidFoodForCreature(Creature creature, string foodName)
         {
+            // Healing potion works for all creatures
             if (foodName.Contains("Healing Potion", StringComparison.OrdinalIgnoreCase))
                 return true;
                 
+            // Creature-specific foods
             return (creature.Type == CreatureType.Dragon && foodName.Contains("Hot Chocolate", StringComparison.OrdinalIgnoreCase)) ||
                    (creature.Type == CreatureType.Fairy && foodName.Contains("Bread", StringComparison.OrdinalIgnoreCase)) ||
                    (creature.Type == CreatureType.Goblin && foodName.Contains("Jelly Beans", StringComparison.OrdinalIgnoreCase));

@@ -5,7 +5,7 @@ namespace CraftingCreatureWorld.UI.Display
     /// <summary>
     /// Provides utility methods for interacting with the console that
     /// gracefully handle environments where no real console is available
-    /// (like unit test runners).
+    /// (like unit test runners or certain terminal environments).
     /// </summary>
     public static class ConsoleHelper
     {
@@ -20,11 +20,15 @@ namespace CraftingCreatureWorld.UI.Display
             }
             catch (IOException)
             {
-                // occurs when no console is attached, ignore
+                // occurs when no console is attached or handle is invalid, ignore
             }
             catch (System.Security.SecurityException)
             {
                 // ignore if permissions forbid clearing
+            }
+            catch (Exception)
+            {
+                // Any other console-related error, ignore
             }
         }
         

@@ -25,27 +25,20 @@ namespace CreatureWorld
         
         public virtual void CalculateDailyCurrency()
         {
-            // Fixed base rates per creature type
-            decimal baseRate = Type switch
-            {
-                CreatureType.Dragon => 15.0m,
-                CreatureType.Fairy => 15.0m,  // All creatures should have the same base rate
-                CreatureType.Goblin => 15.0m, // All creatures should have the same base rate
-                _ => 15.0m
-            };
+            decimal baseRate = 15.0m;
             
             // Apply penalties for zero stats
             if (Health <= 0 && Happiness <= 0)
             {
-                DailyCurrency = 0m; // No income when both are zero
+                DailyCurrency = 0m;
             }
             else if (Health <= 0 || Happiness <= 0)
             {
-                DailyCurrency = Math.Round(baseRate * 0.5m, 2); // 50% penalty if either is zero
+                DailyCurrency = Math.Round(baseRate * 0.5m, 2);
             }
             else
             {
-                DailyCurrency = baseRate; // Full income when both stats are above 0
+                DailyCurrency = baseRate;
             }
         }
         
@@ -69,15 +62,8 @@ namespace CreatureWorld
             Console.WriteLine($"Daily Income: {DailyCurrency:C}");
         }
         
-        public virtual string GetSpecialAbility()
-        {
-            return "A loyal companion";
-        }
-        
         public void EndOfDay()
         {
-            // No longer reduces happiness based on health
-            // Just recalculate currency for the next day
             CalculateDailyCurrency();
         }
         

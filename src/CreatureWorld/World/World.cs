@@ -59,7 +59,7 @@ namespace CreatureWorld
         public void DisplayCreatureCountByType()
         {
             Console.WriteLine($"\n=== Creature Population in {WorldName} ===\n");
-    
+            
             foreach (CreatureType type in Enum.GetValues(typeof(CreatureType)))
             {
                 int count = creatures.FindAll(c => c.Type == type).Count;

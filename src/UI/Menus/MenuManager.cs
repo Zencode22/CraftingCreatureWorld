@@ -45,12 +45,15 @@ namespace CraftingCreatureWorld.UI.Menus
                 switch (input)
                 {
                     case "1":
+                        ConsoleHelper.Clear();
                         _creatureMenu.Show();
                         break;
                     case "2":
+                        ConsoleHelper.Clear();
                         _traderMenu.Show();
                         break;
                     case "3":
+                        ConsoleHelper.Clear();
                         _craftingMenu.Show();
                         break;
                     case "4":

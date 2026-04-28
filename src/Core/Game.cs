@@ -42,20 +42,27 @@ namespace CraftingCreatureWorld.Core
         
         private void InitializeGame()
         {
+            // Safe clear screen before showing intro
+            SafeClearConsole();
+            
+            ConsoleDisplay.ShowHeader("WELCOME TO CREATURE CRAFT");
+            Console.WriteLine($"\nWelcome, {State.Player.Name}!");
+            Console.WriteLine("\nGet ready to care for your creatures and craft amazing items!\n");
+            
             // Add starter creatures
             _gameService.AddStarterCreatures();
             
             // Initialize trader with random recipe
             _gameService.InitializeTrader();
+            
+            Console.WriteLine("\n");
+            ConsoleDisplay.ShowInfo("Press any key to begin your adventure...");
+            InputHandler.WaitForKey();
         }
         
         private void ShowGameOverMessage()
         {
-            try
-            {
-                ConsoleHelper.Clear();
-            }
-            catch { }
+            SafeClearConsole();
             
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(@"
@@ -124,6 +131,25 @@ namespace CraftingCreatureWorld.Core
             catch (Exception)
             {
                 // Any other exception, just continue
+            }
+        }
+        
+        private void SafeClearConsole()
+        {
+            try
+            {
+                if (!Console.IsOutputRedirected)
+                {
+                    Console.Clear();
+                }
+            }
+            catch (IOException)
+            {
+                // Console output is redirected or handle is invalid, ignore
+            }
+            catch (Exception)
+            {
+                // Any other console-related error, ignore
             }
         }
     }

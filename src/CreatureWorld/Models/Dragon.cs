@@ -11,6 +11,7 @@ namespace CreatureWorld
         {
             Type = CreatureType.Dragon;
             ElementType = element;
+            CalculateDailyCurrency();
         }
         
         public override void MakeSound()
@@ -25,13 +26,12 @@ namespace CreatureWorld
         
         public override void DisplayInfo()
         {
-            base.DisplayInfo();
-            Console.WriteLine($"Element: {ElementType}");
-        }
-        
-        public override string GetSpecialAbility()
-        {
-            return $"Breathes {ElementType} - A majestic and powerful creature";
+            Console.WriteLine($"Name: {Name}");
+            Console.WriteLine($"Type: {ElementType} Dragon");
+            Console.WriteLine($"Age: {Age} years");
+            Console.WriteLine($"Health: {Health}/100");
+            Console.WriteLine($"Happiness: {Happiness}/100");
+            Console.WriteLine($"Daily Income: {DailyCurrency:C}");
         }
         
         public void BreatheElement()

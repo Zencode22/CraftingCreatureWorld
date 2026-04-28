@@ -134,16 +134,31 @@ namespace CraftingCreatureWorld.Services
             // Advance the day
             _state.AdvanceDay();
             
-            // Random event chance
-            if (_random.Next(100) < 20) // 20% chance
+            // Random event chance (25% chance, equal chances for each including no event)
+            int eventRoll = _random.Next(4); // 0, 1, 2, or 3
+            switch (eventRoll)
             {
-                TriggerRandomEvent();
+                case 0: // 25% chance - Found ingredients
+                    TriggerFoundIngredientsEvent();
+                    break;
+                case 1: // 25% chance - Creature happiness boost (net increase)
+                    TriggerHappinessBoostEvent();
+                    break;
+                case 2: // 25% chance - Found currency
+                    TriggerFoundCurrencyEvent();
+                    break;
+                case 3: // 25% chance - No event
+                    // Nothing happens
+                    break;
             }
             
             ConsoleDisplay.ShowSuccess($"\n✨ A new day begins! Welcome to Day {_state.CurrentDay}!");
             ConsoleDisplay.ShowInfo($"\nYour creatures are ready to earn more currency today.");
             
             InputHandler.WaitForKey();
+            
+            // Clear the screen before returning to main menu for the new day
+            ConsoleHelper.Clear();
         }
         
         private bool CheckAllCreaturesDeadAndUnhappy()
@@ -230,34 +245,52 @@ namespace CraftingCreatureWorld.Services
             }
         }
         
-        private void TriggerRandomEvent()
+        private void TriggerFoundIngredientsEvent()
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\n✨ Random Event! ✨");
             
-            int eventType = _random.Next(3);
-            switch (eventType)
+            var randomItem = GetRandomItem();
+            _state.Player.Inventory.Add(randomItem.Id.ToString(), 1);
+            Console.WriteLine($"You found 1 {randomItem.Unit} of {randomItem.Name}!");
+            
+            Console.ResetColor();
+        }
+        
+        private void TriggerHappinessBoostEvent()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n✨ Random Event! ✨");
+            
+            // Apply happiness boost large enough to overcome daily decrease (3-8 decrease)
+            // Boost of 10-15 ensures net increase since max daily decrease is 8
+            int happinessBoost = _random.Next(10, 16);
+            
+            foreach (var creature in _state.Player.Creatures)
             {
-                case 0: // Found ingredients
-                    var randomItem = GetRandomItem();
-                    _state.Player.Inventory.Add(randomItem.Id.ToString(), 1);
-                    Console.WriteLine($"You found 1 {randomItem.Unit} of {randomItem.Name}!");
-                    break;
-                    
-                case 1: // Creature happiness boost
-                    foreach (var creature in _state.Player.Creatures)
-                    {
-                        creature.Happiness = Math.Min(100, creature.Happiness + 10);
-                    }
-                    Console.WriteLine("All your creatures are feeling extra happy today!");
-                    break;
-                    
-                case 2: // Found currency
-                    decimal found = _random.Next(5, 20);
-                    _state.Player.Currency += found;
-                    Console.WriteLine($"You found {found:C} on the ground!");
-                    break;
+                // Store old values for display
+                int oldHappiness = creature.Happiness;
+                creature.Happiness = Math.Min(100, creature.Happiness + happinessBoost);
+                int actualIncrease = creature.Happiness - oldHappiness;
+                
+                Console.WriteLine($"{creature.Name} the {creature.Type}: Happiness +{actualIncrease}%");
+                creature.CalculateDailyCurrency();
             }
+            
+            Console.WriteLine("\nAll your creatures are feeling extra happy today!");
+            Console.WriteLine($"A magical breeze of joy swept through the land! (+{happinessBoost} Happiness to all)");
+            
+            Console.ResetColor();
+        }
+        
+        private void TriggerFoundCurrencyEvent()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n✨ Random Event! ✨");
+            
+            decimal found = _random.Next(5, 20);
+            _state.Player.Currency += found;
+            Console.WriteLine($"You found {found:C} on the ground!");
             
             Console.ResetColor();
         }

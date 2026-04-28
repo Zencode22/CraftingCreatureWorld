@@ -27,12 +27,28 @@ namespace CraftingCreatureWorld.Services
         
         public void AddStarterCreatures()
         {
-            var creatures = new Creature[]
-            {
-                new Dragon("Ember", 50, 100, Element.Fire),
-                new Fairy("Lyra", 120, 80, BowType.Longbow),
-                new Goblin("Glimmer", 20, 60, GoblinType.Cave)
-            };
+            // Random Dragon
+            Element randomElement = GetRandomElement();
+            string dragonName = CreatureNames.GetRandomDragonName();
+            int dragonAge = _random.Next(30, 300);
+            int dragonHealth = _random.Next(80, 101);
+            var dragon = new Dragon(dragonName, dragonAge, dragonHealth, randomElement);
+            
+            // Random Fairy
+            BowType randomBow = GetRandomBowType();
+            string fairyName = CreatureNames.GetRandomFairyName();
+            int fairyAge = _random.Next(50, 500);
+            int fairyHealth = _random.Next(70, 101);
+            var fairy = new Fairy(fairyName, fairyAge, fairyHealth, randomBow);
+            
+            // Random Goblin
+            GoblinType randomGoblinType = GetRandomGoblinType();
+            string goblinName = CreatureNames.GetRandomGoblinName();
+            int goblinAge = _random.Next(10, 100);
+            int goblinHealth = _random.Next(60, 101);
+            var goblin = new Goblin(goblinName, goblinAge, goblinHealth, randomGoblinType);
+            
+            var creatures = new Creature[] { dragon, fairy, goblin };
             
             foreach (var creature in creatures)
             {
@@ -40,6 +56,27 @@ namespace CraftingCreatureWorld.Services
             }
             
             Console.WriteLine("\n✨ You received 3 starter creatures!");
+            Console.WriteLine($"   🐉 {dragon.Name} - A {dragon.ElementType} Dragon");
+            Console.WriteLine($"   🧚 {fairy.Name} - A {fairy.BowType} Fairy");
+            Console.WriteLine($"   👺 {goblin.Name} - A {goblin.GoblinType} Goblin");
+        }
+        
+        private Element GetRandomElement()
+        {
+            var elements = new[] { Element.Fire, Element.Ice, Element.Lightning, Element.Earth };
+            return elements[_random.Next(elements.Length)];
+        }
+        
+        private BowType GetRandomBowType()
+        {
+            var bows = new[] { BowType.Shortbow, BowType.Longbow, BowType.Crossbow };
+            return bows[_random.Next(bows.Length)];
+        }
+        
+        private GoblinType GetRandomGoblinType()
+        {
+            var types = new[] { GoblinType.Cave, GoblinType.Forest, GoblinType.Mountain };
+            return types[_random.Next(types.Length)];
         }
         
         public void InitializeTrader()
