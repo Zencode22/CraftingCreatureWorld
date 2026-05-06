@@ -81,18 +81,17 @@ namespace CraftingCreatureWorld.UI.Menus
                 Console.WriteLine($"   Happiness: {happinessBar} {creature.Happiness}%");
                 Console.WriteLine($"   Daily Value: {creature.DailyCurrency:C}");
                 
-                // Show warnings for critical stats
                 if (creature.Health <= 0)
                 {
-                    ConsoleDisplay.ShowWarning($"   ⚠️ {creature.Name} has no health! Income reduced by 50%!");
+                    ConsoleDisplay.ShowWarning($"   [!] {creature.Name} has no health! Income reduced by 50%!");
                 }
                 if (creature.Happiness <= 0)
                 {
-                    ConsoleDisplay.ShowWarning($"   ⚠️ {creature.Name} is completely unhappy! Income reduced by 50%!");
+                    ConsoleDisplay.ShowWarning($"   [!] {creature.Name} is completely unhappy! Income reduced by 50%!");
                 }
                 if (creature.Health <= 0 && creature.Happiness <= 0)
                 {
-                    ConsoleDisplay.ShowError($"   ❌ {creature.Name} is generating NO income!");
+                    ConsoleDisplay.ShowError($"   [X] {creature.Name} is generating NO income!");
                 }
             }
         }
@@ -106,7 +105,6 @@ namespace CraftingCreatureWorld.UI.Menus
                 ConsoleHelper.Clear();
                 ConsoleDisplay.ShowHeader(creature.Name);
                 
-                // Display creature info
                 creature.DisplayInfo();
                 
                 Console.WriteLine("\n=== CREATURE OPTIONS ===");
@@ -155,13 +153,11 @@ namespace CraftingCreatureWorld.UI.Menus
             
             Console.WriteLine($"\nYou spend time playing with {creature.Name} the {creature.Type}...");
             
-            // Different play interactions based on creature type
             string playMessage = GetPlayMessage(creature);
             Console.WriteLine(playMessage);
             
             InputHandler.WaitForKey();
             
-            // Advance to next day after playing
             _dayService.AdvanceToNextDay($"played with {creature.Name}", creature, null);
             
             return true;
@@ -252,7 +248,6 @@ namespace CraftingCreatureWorld.UI.Menus
                     
                     if (confirm == "Y")
                     {
-                        // Check if the food is appropriate for this creature type (or if it's a healing potion)
                         bool isValidFood = IsValidFoodForCreature(creature, selectedFood.Item.Name);
                         
                         if (!isValidFood)
@@ -267,14 +262,12 @@ namespace CraftingCreatureWorld.UI.Menus
                             return false;
                         }
                         
-                        // Remove the food from inventory
                         _state.Player.CraftedFood.RemoveAt(foodChoice - 1);
                         
                         ConsoleDisplay.ShowSuccess($"\n{creature.Name} enjoys the {selectedFood.Item.Name}!");
                         
                         InputHandler.WaitForKey();
                         
-                        // Advance to next day after feeding
                         _dayService.AdvanceToNextDay($"fed {creature.Name}", creature, selectedFood);
                         
                         return true;
@@ -298,11 +291,9 @@ namespace CraftingCreatureWorld.UI.Menus
         
         private bool IsValidFoodForCreature(Creature creature, string foodName)
         {
-            // Healing potion works for all creatures
             if (foodName.Contains("Healing Potion", StringComparison.OrdinalIgnoreCase))
                 return true;
                 
-            // Creature-specific foods
             return (creature.Type == CreatureType.Dragon && foodName.Contains("Hot Chocolate", StringComparison.OrdinalIgnoreCase)) ||
                    (creature.Type == CreatureType.Fairy && foodName.Contains("Bread", StringComparison.OrdinalIgnoreCase)) ||
                    (creature.Type == CreatureType.Goblin && foodName.Contains("Jelly Beans", StringComparison.OrdinalIgnoreCase));

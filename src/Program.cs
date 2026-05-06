@@ -5,19 +5,19 @@ namespace CraftingCreatureWorld
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             try
             {
                 Console.Title = "Creature Craft";
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine(@"
-   _____                _                 _    _____            __ _   
-  / ____|              | |               | |  / ____|          / _| |  
- | |     _ __ ___  __ _| |_ _   _ _ __ __| | | |     _ __ __ _| |_| |_ 
- | |    | '__/ _ \/ _` | __| | | | '__/ _` | | |    | '__/ _` |  _| __|
- | |____| | |  __/ (_| | |_| |_| | | | (_| | | |____| | | (_| | | | |_ 
-  \_____|_|  \___|\__,_|\__|\__,_|_|  \__,_|  \_____|_|  \__,_|_|  \__|
+   _____                _                     _____            __ _   
+  / ____|              | |                   / ____|          / _| |  
+ | |     _ __ ___  __ _| |_ _   _ _ __ ___  | |     _ __ __ _| |_| |_ 
+ | |    | '__/ _ \/ _` | __| | | | '__/ _ \ | |    | '__/ _` |  _| __|
+ | |____| | |  __/ (_| | |_| |_| | | |  __/ | |____| | | (_| | | | |_ 
+  \_____|_|  \___|\__,_|\__|\__,_|_|  \___|  \_____|_|  \__,_|_|  \__|
                                                                        
             ");
                 Console.ResetColor();
@@ -28,22 +28,20 @@ namespace CraftingCreatureWorld
                 string playerName = Console.ReadLine()?.Trim() ?? "Adventurer";
                 if (string.IsNullOrWhiteSpace(playerName)) playerName = "Adventurer";
                 
-                // Safe clear the screen before starting the game
                 SafeClearConsole();
                 
                 var game = new Game(playerName);
                 game.Run();
                 
-                // Safe clear screen for farewell message
                 SafeClearConsole();
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine(@"
-   _____                _                 _    _____            __ _   
-  / ____|              | |               | |  / ____|          / _| |  
- | |     _ __ ___  __ _| |_ _   _ _ __ __| | | |     _ __ __ _| |_| |_ 
- | |    | '__/ _ \/ _` | __| | | | '__/ _` | | |    | '__/ _` |  _| __|
- | |____| | |  __/ (_| | |_| |_| | | | (_| | | |____| | | (_| | | | |_ 
-  \_____|_|  \___|\__,_|\__|\__,_|_|  \__,_|  \_____|_|  \__,_|_|  \__|
+   _____                _                     _____            __ _   
+  / ____|              | |                   / ____|          / _| |  
+ | |     _ __ ___  __ _| |_ _   _ _ __ ___  | |     _ __ __ _| |_| |_ 
+ | |    | '__/ _ \/ _` | __| | | | '__/ _ \ | |    | '__/ _` |  _| __|
+ | |____| | |  __/ (_| | |_| |_| | | |  __/ | |____| | | (_| | | | |_ 
+  \_____|_|  \___|\__,_|\__|\__,_|_|  \___|  \_____|_|  \__,_|_|  \__|
                                                                        
             ");
                 Console.ResetColor();
@@ -67,11 +65,9 @@ namespace CraftingCreatureWorld
             }
             catch (IOException)
             {
-                // Console output is redirected or handle is invalid, ignore
             }
             catch (Exception)
             {
-                // Any other console-related error, ignore
             }
         }
     }

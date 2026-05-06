@@ -13,24 +13,23 @@ namespace CraftingCreatureWorld.Core
         
         public static class Pricing
         {
+            // Tier 1: Milk = Flour = Sugar = Herb
             public const decimal MILK_PRICE = 0.50m;
+            public const decimal FLOUR_PRICE = 0.50m;
+            public const decimal SUGAR_PRICE = 0.50m;
+            public const decimal HERB_PRICE = 1.00m;  // Double for potion
+            
+            // Tier 2: Chocolate Chips = Yeast = Gelatin = Crystal Water
             public const decimal CHOCOLATE_CHIP_PRICE = 1.20m;
-            public const decimal FLOUR_PRICE = 0.30m;
-            public const decimal WATER_PRICE = 0.00m;
-            public const decimal YEAST_PRICE = 0.80m;
-            public const decimal HERB_PRICE = 0.40m;
-            public const decimal SUGAR_PRICE = 0.60m;
-        }
-        
-        public static class StartingInventory
-        {
-            public const int TRADER_MILK_STOCK = 20;
-            public const int TRADER_WATER_STOCK = 30;
-            public const int TRADER_FLOUR_STOCK = 25;
-            public const int TRADER_YEAST_STOCK = 15;
-            public const int TRADER_HERB_STOCK = 20;
-            public const int TRADER_CHOCOLATE_STOCK = 15;
-            public const int TRADER_SUGAR_STOCK = 20;
+            public const decimal YEAST_PRICE = 1.20m;
+            public const decimal GELATIN_PRICE = 1.20m;
+            public const decimal CRYSTAL_WATER_PRICE = 2.40m;  // Double for potion
+            
+            // Tier 3: Cinnamon = Honey = Fruit Juice = Moon Dust
+            public const decimal CINNAMON_PRICE = 0.80m;
+            public const decimal HONEY_PRICE = 0.80m;
+            public const decimal FRUIT_JUICE_PRICE = 0.80m;
+            public const decimal MOON_DUST_PRICE = 1.60m;  // Double for potion
         }
     }
 }

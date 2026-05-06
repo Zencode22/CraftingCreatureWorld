@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using CraftingCreatureWorld.Core;
 using CraftingCreatureWorld.Services;
@@ -8,18 +7,11 @@ using CraftingEngine;
 
 namespace CraftingCreatureWorld.UI.Menus
 {
-    public class TraderMenu
+    public class TraderMenu(GameState state, DayService dayService)
     {
-        private readonly GameState _state;
-        private readonly TradingService _tradingService;
-        private readonly DayService _dayService;
-        
-        public TraderMenu(GameState state, DayService dayService)
-        {
-            _state = state;
-            _dayService = dayService;
-            _tradingService = new TradingService(state);
-        }
+        private readonly GameState _state = state;
+        private readonly DayService _dayService = dayService;
+        private readonly TradingService _tradingService = new(state);
         
         public void Show()
         {
@@ -28,18 +20,17 @@ namespace CraftingCreatureWorld.UI.Menus
             while (inShop)
             {
                 ConsoleHelper.Clear();
-                ConsoleDisplay.ShowHeader("MERCHANT GREGORY'S SHOP");
+                ConsoleDisplay.ShowHeader($"{_state.Trader?.Name ?? "Merchant"}'S SHOP");
                 
-                Console.WriteLine($"Your Currency: {_state.Player.Currency:C}\n");
-                Console.WriteLine("Available Ingredients:\n");
+                Console.WriteLine($"Your Currency: {_state.Player.Currency:C}");
+                Console.WriteLine("\n\"Fresh ingredients, every week!\"\n");
                 
                 var items = _tradingService.GetAvailableItems();
                 
                 for (int i = 0; i < items.Count; i++)
                 {
-                    var (item, price, stock) = items[i];
-                    string stockDisplay = stock > 0 ? stock.ToString() : "OUT";
-                    Console.WriteLine($"{i + 1}. {item.Name,-15} {price,6:C} per {item.Unit} [Stock: {stockDisplay}]");
+                    var (item, price, _) = items[i];
+                    Console.WriteLine($"{i + 1}. {item.Name,-20} {price,6:C} per {item.Unit}");
                 }
                 
                 Console.WriteLine($"\n{items.Count + 1}. View Recipes");
@@ -60,20 +51,12 @@ namespace CraftingCreatureWorld.UI.Menus
                     }
                     else if (choice > 0 && choice <= items.Count)
                     {
-                        var (item, price, stock) = items[choice - 1];
-                        if (stock > 0)
+                        var (item, price, _) = items[choice - 1];
+                        ConsoleHelper.Clear();
+                        bool purchased = BuyItem(item, price);
+                        if (purchased)
                         {
-                            ConsoleHelper.Clear();
-                            bool purchased = BuyItem(item, price);
-                            if (purchased)
-                            {
-                                inShop = false; // Return to main menu after purchase
-                            }
-                        }
-                        else
-                        {
-                            ConsoleDisplay.ShowError("This item is out of stock!");
-                            InputHandler.WaitForKey();
+                            inShop = false;
                         }
                     }
                     else
@@ -105,14 +88,13 @@ namespace CraftingCreatureWorld.UI.Menus
                         
                         InputHandler.WaitForKey();
                         
-                        // Advance to next day after purchasing
                         _dayService.AdvanceToNextDay("purchased items from the merchant");
                         
                         return true;
                     }
                     else
                     {
-                        ConsoleDisplay.ShowError("Insufficient currency or item out of stock!");
+                        ConsoleDisplay.ShowError("Insufficient currency!");
                     }
                 }
                 else
@@ -129,7 +111,7 @@ namespace CraftingCreatureWorld.UI.Menus
             return false;
         }
         
-        private void DisplayRecipes()
+        private static void DisplayRecipes()
         {
             ConsoleHelper.Clear();
             ConsoleDisplay.ShowHeader("AVAILABLE RECIPES");
@@ -141,15 +123,13 @@ namespace CraftingCreatureWorld.UI.Menus
                 Console.WriteLine($"\n{recipe.Name}");
                 Console.WriteLine($"   Result: {recipe.Result}");
                 
-                // Show creature-specific info
                 if (recipe.TargetCreature != "All")
                 {
-                    Console.WriteLine($"   🎯 Best for: {recipe.TargetCreature}");
-                    Console.WriteLine($"   🍽️ Effect when fed to {recipe.TargetCreature}: {recipe.GetEffectDescription()}");
+                    Console.WriteLine($"   Best for: {recipe.TargetCreature}");
                 }
                 else
                 {
-                    Console.WriteLine($"   🍽️ Effect: {recipe.GetEffectDescription()}");
+                    Console.WriteLine($"   Best for: Any creature");
                 }
                 
                 Console.WriteLine($"   Ingredients: {string.Join(", ", recipe.Ingredients.Select(i => i.ToString()))}");

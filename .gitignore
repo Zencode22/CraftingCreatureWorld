@@ -1,0 +1,27 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# VS Code files
+.vscode/
+
+# NuGet packages
+packages/
+
+# Publish output
+publish/
+*.zip
+
+# OS files
+.DS_Store
+Thumbs.db

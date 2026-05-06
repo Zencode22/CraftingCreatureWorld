@@ -1,77 +1,94 @@
-# Crafting Creature World
+# 🧬 Creature Craft
 
-A text-based adventure game where you collect creatures, earn currency, buy ingredients, and craft food to improve your creatures.
+A text-based adventure game where you collect creatures, earn currency, buy ingredients, and craft food to keep your magical companions healthy and happy.
 
 ## Game Overview
 
-In Crafting Creature World, you start with three creatures (Dragon, Elf, Goblin) that generate currency daily. You can use this currency to buy crafting ingredients from a trader, craft food items, and feed your creatures to keep them happy and healthy.
+In Creature Craft, you start with three randomly generated creatures (Dragon, Fairy, Goblin) that generate currency daily. Use your earnings to buy crafting ingredients from a rotating merchant, craft food items, and care for your creatures. But beware - neglect your creatures and they'll stop producing income. If all your creatures lose their health and happiness, the game ends with a lesson about sustainability.
 
 ## Features
 
-- **Creature Management**: Care for your dragons, elves, and goblins
-- **Currency System**: Creatures earn money based on their happiness and health
-- **Trading System**: Buy ingredients from the traveling merchant
-- **Crafting System**: Combine ingredients to create food and potions
-- **Feeding System**: Feed crafted items to improve creature stats
-- **Day/Night Cycle**: Creatures' needs change over time
-- **Random Events**: Discover ingredients or find extra currency
+- **Randomly Generated Creatures**: Each game features unique creatures with random names and types
+- **Creature Care**: Manage health and happiness through feeding and playing
+- **Currency System**: Creatures earn $15.00 daily, with penalties for low stats
+- **Rotating Trader**: Weekly ingredient rotation keeps crafting challenging
+- **Crafting System**: Combine ingredients to create creature-specific foods and potions
+- **Day Progression**: Each action advances the day, changing creature stats
+- **Random Events**: Discover ingredients, find currency, or enjoy happiness boosts
 
 ## How to Play
 
-1. **Manage Creatures**: Check your creatures' health, happiness, and hunger
-2. **Earn Currency**: Creatures generate money each day
-3. **Visit the Trader**: Buy ingredients with your earned currency
-4. **Craft Items**: Combine ingredients to make food
-5. **Feed Creatures**: Use crafted food to improve creature stats
+1. **Manage Creatures**: Check stats, play with them, or feed them crafted food
+2. **Earn Currency**: Creatures generate $15.00 each per day
+3. **Visit the Trader**: Buy ingredients (unlimited supply, weekly rotation)
+4. **Craft Items**: Combine 3 ingredients to make creature-specific food
+5. **End Day**: Days advance after each action (craft, buy, feed, play, or end early)
 
-## Items and Recipes
+## Crafting Recipes
 
-### Ingredients
-- Milk (0.50 per cup)
-- Chocolate Chips (1.20 per cup)
-- Flour (0.30 per cup)
-- Water (Free)
-- Yeast (0.80 per cup)
-- Herb (0.40 per piece)
-- Sugar (0.60 per cup)
+### 🐉 Hot Chocolate (Dragon)
+- 4 cups Milk
+- 0.5 cup Chocolate Chips
+- 2 sticks Cinnamon
+- **Effect**: +25 Health, +15 Happiness
 
-### Crafting Recipes
-- **Hot Chocolate**: 4 cups Milk + 0.5 cup Chocolate Chips → 12 oz Hot Chocolate
-  - Effect: +20 Happiness to all creatures
-  
-- **Bread**: 3 cups Flour + 1.5 cups Water + 0.02 cup Yeast → 1 loaf Bread
-  - Effect: -30 Hunger to all creatures
-  
-- **Healing Potion**: 2 pieces Herb + 0.5 cup Water → 1 bottle Healing Potion
-  - Effect: +25 Health to a single creature
+### 🧚 Bread (Fairy)
+- 3 cups Flour
+- 0.02 cup Yeast
+- 0.5 cup Honey
+- **Effect**: +30 Health, +10 Happiness
 
-## Creatures
+### 💚 Jelly Beans (Goblin)
+- 0.5 cup Sugar
+- 0.3 packet Gelatin
+- 0.5 cup Fruit Juice
+- **Effect**: +20 Health, +20 Happiness
 
-### Dragon
-- Base daily value: 3.0
-- Special: Extra currency when happy (>80 happiness)
-- Element types: Fire, Ice, Lightning, Earth
+### ✨ Healing Potion (Any Creature)
+- 2 pieces Herb
+- 0.5 vial Crystal Water
+- 3 pinches Moon Dust
+- **Effect**: Restores Health and Happiness to maximum
 
-### Elf
-- Base daily value: 2.5
-- Special: Extra currency when healthy (>90 health)
+## Creature Types
+
+### 🐉 Dragon
+- Names themed after Chinese Emperors
+- Elements: Fire, Ice, Lightning, Earth
+- Favorite food: Hot Chocolate
+
+### 🧚 Fairy
+- Names themed after Famous Medieval European Women
 - Bow types: Shortbow, Longbow, Crossbow
+- Favorite food: Bread
 
-### Goblin
-- Base daily value: 2.0
-- Special: Extra currency when not hungry (<30 hunger)
+### 👺 Goblin
+- Names themed after Famous Scientists
 - Types: Cave, Forest, Mountain
+- Favorite food: Jelly Beans
+
+## Trader System
+
+- **Random Name**: Each game features a different Fortune 500 merchant
+- **Weekly Rotation**: Ingredients rotate every 7 days
+- **Unlimited Supply**: Buy as much as you can afford
+- **Potion Ingredients**: Always available at premium prices
+
+## Income System
+
+- Base income: $15.00 per creature per day
+- 50% penalty if Health OR Happiness reaches 0%
+- 0% income if BOTH Health AND Happiness reach 0%
+- Game over if all creatures reach 0% in both stats
 
 ## Getting Started
 
-1. Clone the repository
-2. Open `CraftingCreatureWorld.sln` in Visual Studio
-3. Build and run the project
-4. Enter your name when prompted
-5. Follow the on-screen menus to play!
+### Prerequisites
+- .NET 8.0 SDK or later
 
-## Building from Source
-
+### Running the Game
+1. Download and extract the zip file
+2. Open a terminal in the extracted folder
+3. Run the game:
 ```bash
-dotnet build
 dotnet run --project src/CraftingCreatureWorld.csproj

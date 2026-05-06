@@ -19,7 +19,6 @@ namespace CreatureWorld
         public void AddCreature(Creature creature)
         {
             creatures.Add(creature);
-            Console.WriteLine($"{creature.Name} the {creature.Type} has entered {WorldName}.");
         }
         
         public void RemoveCreature(Creature creature)
