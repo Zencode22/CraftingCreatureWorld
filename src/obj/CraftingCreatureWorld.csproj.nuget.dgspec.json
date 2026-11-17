@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj": {}
+    "/workspace/src/CraftingCreatureWorld.csproj": {}
   },
   "projects": {
-    "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj": {
+    "/workspace/src/CraftingCreatureWorld.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj",
+        "projectUniqueName": "/workspace/src/CraftingCreatureWorld.csproj",
         "projectName": "CraftingCreatureWorld",
-        "projectPath": "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\CraftingCreatureWorld.csproj",
-        "packagesPath": "C:\\Users\\conno\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\conno\\Documents\\GitHub\\Codes\\CraftingCreatureWorld\\src\\obj\\",
+        "projectPath": "/workspace/src/CraftingCreatureWorld.csproj",
+        "packagesPath": "/root/.nuget/packages/",
+        "outputPath": "/workspace/src/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\conno\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/root/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -37,8 +37,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "10.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -60,30 +59,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.23, 8.0.23]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/dotnet/sdk/8.0.428/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
