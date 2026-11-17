@@ -10,11 +10,12 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/bin/Debug/net8.0/CraftingCreatureWorld.dll",
+            // The executable entry point is the MonoGame project (GameUI/CreatureCraft.csproj).
+            "program": "${workspaceFolder}/src/GameUI/bin/Debug/net8.0/CreatureCraft.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/src",
+            "cwd": "${workspaceFolder}/src/GameUI",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
+            "console": "externalTerminal",
             "stopAtEntry": false
         },
         {
