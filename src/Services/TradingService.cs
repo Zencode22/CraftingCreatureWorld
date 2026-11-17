@@ -34,9 +34,11 @@ namespace CraftingCreatureWorld.Services
                 _lastRotationDay = currentDay;
             }
             
-            items.Add((GameItems.Herb, Pricing.HERB_PRICE, "∞"));
-            items.Add((GameItems.CrystalWater, Pricing.CRYSTAL_WATER_PRICE, "∞"));
-            items.Add((GameItems.MoonDust, Pricing.MOON_DUST_PRICE, "∞"));
+            // Potion ingredients are always available (ASCII stock marker so any
+            // font can render it).
+            items.Add((GameItems.Herb, Pricing.HERB_PRICE, "Unlimited"));
+            items.Add((GameItems.CrystalWater, Pricing.CRYSTAL_WATER_PRICE, "Unlimited"));
+            items.Add((GameItems.MoonDust, Pricing.MOON_DUST_PRICE, "Unlimited"));
             
             var activeRecipe = GetActiveRecipe();
             

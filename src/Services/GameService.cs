@@ -43,10 +43,10 @@ namespace CraftingCreatureWorld.Services
                 _creatureService.AddCreature(creature);
             }
             
-            Console.WriteLine("\n*** You received 3 starter creatures! ***");
-            Console.WriteLine($"   [Dragon] {dragon.Name} - A {dragon.ElementType} Dragon");
-            Console.WriteLine($"   [Fairy]  {fairy.Name} - A {fairy.BowType} Fairy");
-            Console.WriteLine($"   [Goblin] {goblin.Name} - A {goblin.GoblinType} Goblin");
+            UiEvents.RaiseToast("You received 3 starter creatures!", ToastKind.Success);
+            UiEvents.RaiseLog($"[Dragon] {dragon.Name} - A {dragon.ElementType} Dragon");
+            UiEvents.RaiseLog($"[Fairy]  {fairy.Name} - A {fairy.BowType} Fairy");
+            UiEvents.RaiseLog($"[Goblin] {goblin.Name} - A {goblin.GoblinType} Goblin");
         }
         
         private Element GetRandomElement()
@@ -77,7 +77,7 @@ namespace CraftingCreatureWorld.Services
             
             string traderName = TraderNames.GetRandomName();
             _state.Trader = new Trader(traderName, randomRecipe);
-            Console.WriteLine($"\n[Trader] {traderName} has arrived with their wares!");
+            UiEvents.RaiseToast($"{traderName} has arrived with their wares!", ToastKind.Info);
         }
     }
 }

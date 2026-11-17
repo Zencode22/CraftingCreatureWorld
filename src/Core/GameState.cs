@@ -1,28 +1,40 @@
-using CraftingCreatureWorld.Entities;
-using CreatureWorld;
 
 namespace CraftingCreatureWorld.Core
 {
-    public class GameState
+    /// <summary>
+    /// Shared per-frame context handed to every screen so they can read game
+    /// state, draw with the renderer, and navigate to other screens.
+    /// </summary>
+    public sealed class ScreenContext
     {
-        public Player Player { get; set; }
-        // Trader may not be initialized immediately, allow null
-        public Trader? Trader { get; set; }
-        public World GameWorld { get; set; }
-        public int CurrentDay { get; private set; } = 1;
-        public bool IsGameOver { get; set; }
-        public string? GameOverReason { get; set; }
-        
-        public GameState(string playerName)
+        public GameLogic Logic { get; set; }
+        public Renderer Renderer { get; }
+        public InputState Input { get; }
+        public ToastQueue Toasts { get; }
+
+        public ScreenContext(GameLogic logic, Renderer renderer, InputState input, ToastQueue toasts)
         {
-            Player = new Player(playerName);
-            GameWorld = new World("Fantasy Lands");
-            IsGameOver = false;
+            Logic = logic;
+            Renderer = renderer;
+            Input = input;
+            Toasts = toasts;
         }
-        
-        public void AdvanceDay()
-        {
-            CurrentDay++;
-        }
+
+        /// <summary>Replace the current screen with a new one.</summary>
+        public Action<IScreen>? Navigate { get; set; }
+
+        /// <summary>Close the current (modal) screen and return to the previous one.</summary>
+        public Action? CloseModal { get; set; }
+
+        /// <summary>Show a transient notification on screen.</summary>
+        public void Toast(string message, ToastKind kind = ToastKind.Info) => Toasts.Push(message, kind);
+    }
+
+    /// <summary>Anything drawn and updated each frame implements this.</summary>
+    public interface IScreen
+    {
+        string HotkeyHelp { get; }
+        void Update(ScreenContext ctx);
+        void Draw(ScreenContext ctx);
     }
 }
