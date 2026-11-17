@@ -1,5 +1,7 @@
 using CraftingCreatureWorld.Core;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>

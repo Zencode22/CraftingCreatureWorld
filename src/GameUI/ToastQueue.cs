@@ -1,5 +1,7 @@
 using CraftingCreatureWorld.Core;
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 namespace CraftingCreatureWorld.GameUI
 {
     /// <summary>A single on-screen notification with a fade-out timer.</summary>
