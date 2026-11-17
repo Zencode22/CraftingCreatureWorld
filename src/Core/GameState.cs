@@ -1,4 +1,6 @@
 
+using Microsoft.Xna.Framework;
+using CraftingCreatureWorld.GameUI;
 namespace CraftingCreatureWorld.Core
 {
     /// <summary>
@@ -28,6 +30,9 @@ namespace CraftingCreatureWorld.Core
 
         /// <summary>Show a transient notification on screen.</summary>
         public void Toast(string message, ToastKind kind = ToastKind.Info) => Toasts.Push(message, kind);
+
+        /// <summary>Last creature the player was looking at (used to return after day reports).</summary>
+        public CreatureWorld.Creature? LastViewedCreature { get; set; }
     }
 
     /// <summary>Anything drawn and updated each frame implements this.</summary>

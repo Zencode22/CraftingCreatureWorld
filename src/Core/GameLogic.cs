@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CraftingCreatureWorld.Entities;
 using CraftingCreatureWorld.Services;
-using CraftingCreatureWorld.UI.Menus;
 using CraftingEngine;
 using CreatureWorld;
 
@@ -119,16 +118,17 @@ namespace CraftingCreatureWorld.Core
             return _dayService.AdvanceToNextDay($"fed {creature.Name} a {food.Item.Name}", creature, food);
         }
 
-        public bool Buy(Item item, decimal amount)
+        /// <summary>Buys <paramref name="amount"/> units and advances the day.
+        /// Returns the day report, or null when the purchase failed.</summary>
+        public DayReport? Buy(Item item, decimal amount)
         {
             if (!_tradingService.BuyItem(item, amount))
             {
                 UiEvents.RaiseToast("Insufficient currency!", ToastKind.Error);
-                return false;
+                return null;
             }
 
-            _dayService.AdvanceToNextDay($"purchased {amount} {item.Unit} of {item.Name}");
-            return true;
+            return _dayService.AdvanceToNextDay($"purchased {amount} {item.Unit} of {item.Name}");
         }
 
         public bool Craft(Recipe recipe)
