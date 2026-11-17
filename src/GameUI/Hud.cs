@@ -19,7 +19,7 @@ namespace CraftingCreatureWorld.GameUI
 
         public static void Draw(ScreenContext ctx, GameLogic logic)
         {
-            var r = ctx.Renderer;
+            var r = ctx.Renderer!;
             var vp = r.Viewport;
 
             // ---- top bar ----

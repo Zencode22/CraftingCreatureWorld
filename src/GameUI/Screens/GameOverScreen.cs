@@ -29,7 +29,7 @@ namespace CraftingCreatureWorld.GameUI.Screens
 
         public void Draw(ScreenContext ctx)
         {
-            var r = ctx.Renderer;
+            var r = ctx.Renderer!;
             var vp = r.Viewport;
 
             r.CenteredText("GAME OVER", vp.Width / 2f, vp.Height / 2f - 110, Theme.Red, bold: true, scale: 2.2f);

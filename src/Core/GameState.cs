@@ -9,14 +9,15 @@ namespace CraftingCreatureWorld.Core
     public sealed class ScreenContext
     {
         public GameLogic Logic { get; set; }
-        public Renderer Renderer { get; set; }
+        /// <summary>Assigned once the graphics device and fonts are available
+        /// (LoadContent). Nullable because screens are constructed before it exists.</summary>
+        public Renderer? Renderer { get; set; }
         public InputState Input { get; }
         public ToastQueue Toasts { get; }
 
-        public ScreenContext(GameLogic logic, Renderer renderer, InputState input, ToastQueue toasts)
+        public ScreenContext(GameLogic logic, InputState input, ToastQueue toasts)
         {
             Logic = logic;
-            Renderer = renderer;
             Input = input;
             Toasts = toasts;
         }
