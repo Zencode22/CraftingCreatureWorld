@@ -42,8 +42,10 @@ namespace CraftingCreatureWorld.GameUI
 
             // A dummy logic instance exists from the start so HUD-less screens
             // (title / game over) still have a valid context; it is replaced
-            // when the player starts a real game.
-            _ctx = new ScreenContext(new GameLogic("Adventurer"), _renderer!, _input, _toasts);
+            // when the player starts a real game. The Renderer stays null here
+            // because LoadContent (fonts/graphics) hasn't run yet; it is wired
+            // up there before any screen is pushed.
+            _ctx = new ScreenContext(new GameLogic("Adventurer"), _input, _toasts);
             _ctx.Navigate = Push;
             _ctx.CloseModal = () => { if (_screens.Count > 1) _screens.Pop(); };
 

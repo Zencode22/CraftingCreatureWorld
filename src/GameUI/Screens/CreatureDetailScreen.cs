@@ -52,7 +52,7 @@ namespace CraftingCreatureWorld.GameUI.Screens
         public void Draw(ScreenContext ctx)
         {
             ctx.LastViewedCreature = _creature;
-            var r = ctx.Renderer;
+            var r = ctx.Renderer!;
             var vp = r.Viewport;
             Hud.Draw(ctx, ctx.Logic);
 

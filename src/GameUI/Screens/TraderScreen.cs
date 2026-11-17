@@ -27,7 +27,7 @@ namespace CraftingCreatureWorld.GameUI.Screens
 
         public void Draw(ScreenContext ctx)
         {
-            var r = ctx.Renderer;
+            var r = ctx.Renderer!;
             var vp = r.Viewport;
             Hud.Draw(ctx, ctx.Logic);
 

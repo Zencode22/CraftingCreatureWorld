@@ -45,7 +45,7 @@ namespace CraftingCreatureWorld.GameUI.Screens
             }
 
             // clicking the start button also works
-            var vp = ctx.Renderer.Viewport;
+            var vp = ctx.Renderer!.Viewport;
             var startBtn = new Rectangle(vp.Width / 2 - 120, 400, 240, 56);
             if (ctx.Input.LeftClicked && startBtn.Contains(ctx.Input.MousePosition))
                 StartGame(ctx);
@@ -81,7 +81,7 @@ namespace CraftingCreatureWorld.GameUI.Screens
 
         public void Draw(ScreenContext ctx)
         {
-            var r = ctx.Renderer;
+            var r = ctx.Renderer!;
             var vp = r.Viewport;
             float cx = vp.Width / 2f;
 
