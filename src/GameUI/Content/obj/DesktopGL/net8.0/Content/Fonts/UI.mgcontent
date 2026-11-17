@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/conno/Documents/GitHub/Codes/CraftingCreatureWorld/src/GameUI/Content/Fonts/UI.spritefont</SourceFile>
+  <SourceTime>2026-11-17T17:13:56.9886003-06:00</SourceTime>
+  <DestFile>C:/Users/conno/Documents/GitHub/Codes/CraftingCreatureWorld/src/GameUI/Content/bin/DesktopGL/Content/Fonts/UI.xnb</DestFile>
+  <DestTime>2026-11-17T17:46:47.7949001-06:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2024-08-16T12:05:56-05:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2024-08-16T12:05:56-05:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

@@ -1,0 +1,3 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/conno/Documents/GitHub/Codes/CraftingCreatureWorld/src/GameUI/Content/Fonts/UI.spritefont","C:/Users/conno/Documents/GitHub/Codes/CraftingCreatureWorld/src/GameUI/Content/bin/DesktopGL/Content/Fonts/UI.xnb","FontDescriptionProcessor","SpriteFontContent",752,60958,0.2135184
+"C:/Users/conno/Documents/GitHub/Codes/CraftingCreatureWorld/src/GameUI/Content/Fonts/UIBold.spritefont","C:/Users/conno/Documents/GitHub/Codes/CraftingCreatureWorld/src/GameUI/Content/bin/DesktopGL/Content/Fonts/UIBold.xnb","FontDescriptionProcessor","SpriteFontContent",756,68126,0.0318582

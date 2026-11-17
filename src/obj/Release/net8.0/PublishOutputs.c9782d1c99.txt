@@ -1,0 +1,6 @@
+C:\Users\conno\Documents\GitHub\Codes\CraftingCreatureWorld\publish\cross-platform\CraftingCreatureWorld.exe
+C:\Users\conno\Documents\GitHub\Codes\CraftingCreatureWorld\publish\cross-platform\CraftingCreatureWorld.dll
+C:\Users\conno\Documents\GitHub\Codes\CraftingCreatureWorld\publish\cross-platform\CraftingCreatureWorld.deps.json
+C:\Users\conno\Documents\GitHub\Codes\CraftingCreatureWorld\publish\cross-platform\CraftingCreatureWorld.runtimeconfig.json
+C:\Users\conno\Documents\GitHub\Codes\CraftingCreatureWorld\publish\cross-platform\CraftingCreatureWorld.pdb
+C:\Users\conno\Documents\GitHub\Codes\CraftingCreatureWorld\publish\cross-platform\Newtonsoft.Json.dll

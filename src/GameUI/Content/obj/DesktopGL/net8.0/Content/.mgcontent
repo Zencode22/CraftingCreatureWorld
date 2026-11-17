@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>HiDef</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/conno/Documents/GitHub/Codes/CraftingCreatureWorld/src/GameUI/Content/Fonts/UI.spritefont</File>
+    <File>C:/Users/conno/Documents/GitHub/Codes/CraftingCreatureWorld/src/GameUI/Content/Fonts/UIBold.spritefont</File>
+  </SourceFiles>
+  <DestFiles>
+    <File>Fonts/UI</File>
+    <File>Fonts/UIBold</File>
+  </DestFiles>
+</SourceFileCollection>
