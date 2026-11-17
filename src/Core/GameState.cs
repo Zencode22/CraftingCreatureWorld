@@ -1,5 +1,4 @@
 
-using Microsoft.Xna.Framework;
 using CraftingCreatureWorld.GameUI;
 namespace CraftingCreatureWorld.Core
 {
@@ -10,7 +9,7 @@ namespace CraftingCreatureWorld.Core
     public sealed class ScreenContext
     {
         public GameLogic Logic { get; set; }
-        public Renderer Renderer { get; }
+        public Renderer Renderer { get; set; }
         public InputState Input { get; }
         public ToastQueue Toasts { get; }
 

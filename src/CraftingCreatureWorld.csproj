@@ -1,11 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <!-- Library of shared game logic; the executable entry point is GameUI/CreatureCraft.csproj (MonoGame) -->
+    <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <!-- UI-only sources (MonoGame screen context & GameUI folder) belong to GameUI/CreatureCraft.csproj -->
+    <Compile Remove="GameUI/**/*.cs" />
+    <Compile Remove="Core/GameState.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
