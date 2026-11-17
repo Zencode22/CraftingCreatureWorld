@@ -55,18 +55,33 @@ namespace CraftingCreatureWorld.GameUI
 
         protected override void LoadContent()
         {
+            // Order matters: create the SpriteBatch, then the renderer, and
+            // only push the first screen after everything is non-null. If any
+            // step throws (e.g. missing Content/Fonts/*.xnb), no screen exists
+            // yet, so we fail fast with the real exception instead of a
+            // delayed NullReferenceException inside a screen's Draw().
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             var pixel = new Texture2D(GraphicsDevice, 1, 1);
             pixel.SetData(new[] { Color.White });
 
-            _renderer = new Renderer(
-                _spriteBatch,
-                pixel,
-                Content.Load<SpriteFont>("Fonts/UI"),
-                Content.Load<SpriteFont>("Fonts/UIBold"));
+            SpriteFont uiFont, uiBoldFont;
+            try
+            {
+                uiFont = Content.Load<SpriteFont>("Fonts/UI");
+                uiBoldFont = Content.Load<SpriteFont>("Fonts/UIBold");
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    "Failed to load UI fonts. Make sure the MonoGame content " +
+                    "pipeline ran and Content/Fonts/UI.xnb & UIBold.xnb exist " +
+                    $"next to the executable (looked in: '{Content.RootDirectory}').", ex);
+            }
 
+            _renderer = new Renderer(_spriteBatch, pixel, uiFont, uiBoldFont);
             _ctx.Renderer = _renderer;
+
             _screens.Push(new TitleScreen());
         }
 
