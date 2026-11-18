@@ -38,37 +38,28 @@ namespace CraftingCreatureWorld.GameUI
 
         protected override void Initialize()
         {
-            base.Initialize();
-
-            // A dummy logic instance exists from the start so HUD-less screens
-            // (title / game over) still have a valid context; it is replaced
-            // when the player starts a real game. The Renderer stays null here
-            // because LoadContent (fonts/graphics) hasn't run yet; it is wired
-            // up there before any screen is pushed.
+            // NOTE: everything this override needs lives in the field
+            // initializers / constructor, so build the context BEFORE calling
+            // base.Initialize(). XNA calls LoadContent() from within
+            // base.Initialize(), and doing our setup first means LoadContent
+            // can never observe a partially-initialized game (this previously
+            // surfaced as hard-to-diagnose null crashes at startup).
             _ctx = new ScreenContext(new GameLogic("Adventurer"), _input, _toasts);
             _ctx.Navigate = Push;
             _ctx.CloseModal = () => { if (_screens.Count > 1) _screens.Pop(); };
 
             UiEvents.Toast += (msg, kind) => _toasts.Push(msg, kind);
             GameOverScreen.RequestExit = Exit;
+
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            // NullReferenceExceptions here almost always mean a *dependency*
-            // (GraphicsDevice / SpriteBatch) is null because Initialize() was
-            // never reached - typically caused by stepping over base.Initialize()
-            // or LoadContent() in the debugger on a previous run. Fail with an
-            // explicit message instead of a bare NRE so the cause is obvious.
-            if (_ctx is null)
-                throw new InvalidOperationException(
-                    "LoadContent() ran before Initialize() completed. If you are " +
-                    "debugging, make sure Initialize() (including base.Initialize()) " +
-                    "is not skipped or stepped over.");
-
             if (GraphicsDevice is null)
                 throw new InvalidOperationException(
-                    "The GraphicsDevice is null when LoadContent() runs. Restart the " +
+                    "The GraphicsDevice is null when LoadContent() runs. This usually " +
+                    "means base.Initialize() was skipped in the debugger - restart the " +
                     "debug session without stepping over Initialize()/LoadContent().");
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
