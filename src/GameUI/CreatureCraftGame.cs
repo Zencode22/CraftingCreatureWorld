@@ -55,11 +55,22 @@ namespace CraftingCreatureWorld.GameUI
 
         protected override void LoadContent()
         {
-            // Order matters: create the SpriteBatch, then the renderer, and
-            // only push the first screen after everything is non-null. If any
-            // step throws (e.g. missing Content/Fonts/*.xnb), no screen exists
-            // yet, so we fail fast with the real exception instead of a
-            // delayed NullReferenceException inside a screen's Draw().
+            // NullReferenceExceptions here almost always mean a *dependency*
+            // (GraphicsDevice / SpriteBatch) is null because Initialize() was
+            // never reached - typically caused by stepping over base.Initialize()
+            // or LoadContent() in the debugger on a previous run. Fail with an
+            // explicit message instead of a bare NRE so the cause is obvious.
+            if (_ctx is null)
+                throw new InvalidOperationException(
+                    "LoadContent() ran before Initialize() completed. If you are " +
+                    "debugging, make sure Initialize() (including base.Initialize()) " +
+                    "is not skipped or stepped over.");
+
+            if (GraphicsDevice is null)
+                throw new InvalidOperationException(
+                    "The GraphicsDevice is null when LoadContent() runs. Restart the " +
+                    "debug session without stepping over Initialize()/LoadContent().");
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             var pixel = new Texture2D(GraphicsDevice, 1, 1);
