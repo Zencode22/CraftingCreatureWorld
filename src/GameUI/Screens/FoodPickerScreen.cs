@@ -2,13 +2,12 @@ using CraftingCreatureWorld.Core;
 using CreatureWorld;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>
-    /// Pantry picker shown when feeding a creature. Each food item is a button
-    /// with a number hot key [1..9]. Feeding advances the day.
+    /// Pantry picker shown when feeding a creature. Each food item is a button.
+    /// Feeding advances the day.
     /// </summary>
     public sealed class FoodPickerScreen : IScreen
     {
@@ -16,12 +15,8 @@ namespace CraftingCreatureWorld.GameUI.Screens
 
         public FoodPickerScreen(Creature creature) => _creature = creature;
 
-        public string HotkeyHelp => "[1-9] Feed item   [Esc] Back";
-
         public void Update(ScreenContext ctx)
         {
-            if (ctx.Input.WasPressed(Keys.Escape))
-                ctx.Navigate?.Invoke(new CreatureDetailScreen(_creature));
         }
 
         public void Draw(ScreenContext ctx)
@@ -47,7 +42,7 @@ namespace CraftingCreatureWorld.GameUI.Screens
                 string effect = GameLogic.FoodEffectDescription(food.Item.Name);
                 string sub = valid ? effect : $"{_creature.Type} won't eat this!";
 
-                if (r.Button(rect, food.Item.Name, ctx.Input, Keys.D1 + i, accent: valid, subLabel: sub))
+                if (r.Button(rect, food.Item.Name, ctx.Input, accent: valid, subLabel: sub))
                 {
                     FeedWith(ctx, food);
                     return;
@@ -58,7 +53,9 @@ namespace CraftingCreatureWorld.GameUI.Screens
                 r.CenteredText("Your pantry is empty - craft some food first!",
                                vp.Width / 2f, vp.Height / 2f, Theme.TextDim);
 
-            r.CenteredText(HotkeyHelp, vp.Width / 2f, vp.Height - 36, Theme.TextDim, scale: 0.9f);
+            var backBtn = new Rectangle(24, vp.Height - 58, 200, 42);
+            if (r.Button(backBtn, "Back", ctx.Input))
+                ctx.Navigate?.Invoke(new CreatureDetailScreen(_creature));
         }
 
         private void FeedWith(ScreenContext ctx, CraftingEngine.Result food)

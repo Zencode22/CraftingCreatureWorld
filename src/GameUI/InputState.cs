@@ -6,7 +6,7 @@ namespace CraftingCreatureWorld.GameUI
 {
     /// <summary>
     /// Per-frame input snapshot: mouse position/clicks, scroll wheel and
-    /// edge-detected key presses (so a hot key fires once per press).
+    /// edge-detected key presses (used for title-screen text entry).
     /// </summary>
     public sealed class InputState
     {
@@ -39,7 +39,6 @@ namespace CraftingCreatureWorld.GameUI
             _prevMouse = ms;
         }
 
-        public bool WasPressed(Keys? key) => key.HasValue && _pressed.Contains(key.Value);
-        public bool IsDown(Keys key) => _released.Contains(key);
+        public bool WasPressed(Keys key) => _pressed.Contains(key);
     }
 }

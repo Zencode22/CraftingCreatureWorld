@@ -89,7 +89,7 @@ namespace CraftingCreatureWorld.GameUI
 
         protected override void Update(GameTime gameTime)
         {
-            // Esc-to-quit is handled per-screen; the window close button works too.
+            // Quitting is handled by on-screen buttons; the window close button works too.
             _input.Update();
 
             if (_ctx.Logic.IsGameOver && Current is not GameOverScreen && Current is not TitleScreen)

@@ -1,12 +1,11 @@
 using CraftingCreatureWorld.Core;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>
-    /// Game-over screen. [Enter] returns to the title, [Esc] closes the window.
+    /// Game-over screen. Play again returns to the title; quit closes the window.
     /// </summary>
     public sealed class GameOverScreen : IScreen
     {
@@ -14,17 +13,11 @@ namespace CraftingCreatureWorld.GameUI.Screens
 
         public GameOverScreen(string reason) => _reason = reason;
 
-        public string HotkeyHelp => "[Enter] Play again   [Esc] Quit";
-
         /// <summary>Set by the game so the UI can request the window to close.</summary>
         public static System.Action? RequestExit { get; set; }
 
         public void Update(ScreenContext ctx)
         {
-            if (ctx.Input.WasPressed(Keys.Enter))
-                ctx.Navigate?.Invoke(new TitleScreen());
-            else if (ctx.Input.WasPressed(Keys.Escape))
-                RequestExit?.Invoke();
         }
 
         public void Draw(ScreenContext ctx)
@@ -38,10 +31,12 @@ namespace CraftingCreatureWorld.GameUI.Screens
                            vp.Width / 2f, vp.Height / 2f + 4, Theme.TextDim);
 
             var againBtn = new Rectangle(vp.Width / 2 - 130, (int)(vp.Height / 2f + 50), 260, 52);
-            if (r.Button(againBtn, "Play Again", ctx.Input, Keys.Enter, accent: true))
+            if (r.Button(againBtn, "Play Again", ctx.Input, accent: true))
                 ctx.Navigate?.Invoke(new TitleScreen());
 
-            r.CenteredText(HotkeyHelp, vp.Width / 2f, vp.Height - 36, Theme.TextDim, scale: 0.9f);
+            var quitBtn = new Rectangle(vp.Width / 2 - 130, (int)(vp.Height / 2f + 118), 260, 52);
+            if (r.Button(quitBtn, "Quit Game", ctx.Input))
+                RequestExit?.Invoke();
         }
 
         private string DescribeReason() => _reason switch

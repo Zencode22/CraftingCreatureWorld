@@ -3,26 +3,20 @@ using CraftingCreatureWorld.Core;
 using CraftingEngine;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>
-    /// The merchant's shop. Every item row is a button with a number hot key
-    /// [1..9]; clicking or pressing buys one unit (which advances the day, so
-    /// the end-of-day report is shown afterwards). [Esc] leaves the shop.
+    /// The merchant's shop. Every item row is a button; clicking buys one unit
+    /// (which advances the day, so the end-of-day report is shown afterwards).
     /// </summary>
     public sealed class TraderScreen : IScreen
     {
         private List<(Item item, decimal price, string stock)> _items = new();
         private int _version = -1;
 
-        public string HotkeyHelp => "[1-9] Buy item   [Esc] Leave shop";
-
         public void Update(ScreenContext ctx)
         {
-            if (ctx.Input.WasPressed(Keys.Escape))
-                ctx.Navigate?.Invoke(new MainMenuScreen());
         }
 
         public void Draw(ScreenContext ctx)
@@ -54,7 +48,7 @@ namespace CraftingCreatureWorld.GameUI.Screens
                 var rect = new Rectangle((int)x, (int)(top + i * (h + gap)), (int)w, (int)h);
                 bool affordable = ctx.Logic.Player.Currency >= price;
 
-                if (r.Button(rect, $"Buy {item.Unit} of {item.Name}", ctx.Input, Keys.D1 + i,
+                if (r.Button(rect, $"Buy {item.Unit} of {item.Name}", ctx.Input,
                         enabled: affordable,
                         subLabel: $"{price:C}  |  Stock: {stock}{(affordable ? "" : "  -  not enough coin!")}"))
                 {
@@ -67,7 +61,9 @@ namespace CraftingCreatureWorld.GameUI.Screens
                        affordable ? Theme.Gold : Theme.TextDim, bold: true);
             }
 
-            r.CenteredText(HotkeyHelp, vp.Width / 2f, vp.Height - 36, Theme.TextDim, scale: 0.9f);
+            var backBtn = new Rectangle(24, vp.Height - 58, 200, 42);
+            if (r.Button(backBtn, "Back to Menu", ctx.Input))
+                ctx.Navigate?.Invoke(new MainMenuScreen());
         }
 
         private bool BuyOne(ScreenContext ctx, Item item, decimal price)

@@ -1,1 +1,32 @@
+# Visual Studio / VS Code
+.vs/
 .vscode/
+*.user
+*.suo
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# Published binaries
+publish/
+
+# MonoGame content pipeline intermediates
+*.mgcb.bin
+
+# NuGet
+*.nupkg
+packages/
+project.assets.json
+
+# Test results
+[Tt]est[Rr]esults/
+
+# OS junk
+Thumbs.db
+desktop.ini

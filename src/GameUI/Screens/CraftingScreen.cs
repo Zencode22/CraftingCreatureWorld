@@ -3,26 +3,20 @@ using CraftingCreatureWorld.Core;
 using CraftingEngine;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>
-    /// Recipe list. Each recipe is a button with a number hot key [1..9];
-    /// crafting consumes ingredients and advances the day. A pantry panel on
-    /// the right shows current stock. [Esc] returns to the menu.
+    /// Recipe list. Each recipe is a button; crafting consumes ingredients and
+    /// advances the day. A pantry panel on the right shows current stock.
     /// </summary>
     public sealed class CraftingScreen : IScreen
     {
         private List<Recipe> _recipes = new();
         private int _version = -1;
 
-        public string HotkeyHelp => "[1-9] Craft recipe   [Esc] Back";
-
         public void Update(ScreenContext ctx)
         {
-            if (ctx.Input.WasPressed(Keys.Escape))
-                ctx.Navigate?.Invoke(new MainMenuScreen());
         }
 
         public void Draw(ScreenContext ctx)
@@ -53,7 +47,7 @@ namespace CraftingCreatureWorld.GameUI.Screens
                 string needs = string.Join(", ",
                     System.Linq.Enumerable.Select(recipe.Ingredients, ing => $"{ing.Value}"));
 
-                if (r.Button(rect, $"Craft: {recipe.Name}", ctx.Input, Keys.D1 + i, enabled: canCraft,
+                if (r.Button(rect, $"Craft: {recipe.Name}", ctx.Input, enabled: canCraft,
                         subLabel: $"Makes {recipe.Result}  |  Needs: {needs}"))
                 {
                     CraftOne(ctx, recipe);
@@ -88,7 +82,9 @@ namespace CraftingCreatureWorld.GameUI.Screens
                 py += 22;
             }
 
-            r.CenteredText(HotkeyHelp, vp.Width / 2f, vp.Height - 36, Theme.TextDim, scale: 0.9f);
+            var backBtn = new Rectangle(24, vp.Height - 58, 200, 42);
+            if (r.Button(backBtn, "Back to Menu", ctx.Input))
+                ctx.Navigate?.Invoke(new MainMenuScreen());
         }
 
         private void CraftOne(ScreenContext ctx, Recipe recipe)

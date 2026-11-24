@@ -5,25 +5,16 @@ using Microsoft.Xna.Framework.Input;
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>
-    /// Title screen: type a player name (keyboard) and press Enter / click
-    /// Start. Hot keys: [Enter] start, [Esc] quit.
+    /// Title screen: type a player name (keyboard) and click Start.
     /// </summary>
     public sealed class TitleScreen : IScreen
     {
         private string _name = "";
         private float _blink;
 
-        public string HotkeyHelp => "[Type] name   [Enter] Start   [Esc] Quit";
-
         public void Update(ScreenContext ctx)
         {
             _blink += 0.05f;
-
-            if (ctx.Input.WasPressed(Keys.Escape))
-            {
-                ctx.Logic.QuitGame();
-                return;
-            }
 
             var kb = Keyboard.GetState();
             foreach (var key in kb.GetPressedKeys())
@@ -32,11 +23,6 @@ namespace CraftingCreatureWorld.GameUI.Screens
 
                 if (key == Keys.Back && _name.Length > 0)
                     _name = _name[..^1];
-                else if (key == Keys.Enter)
-                {
-                    StartGame(ctx);
-                    return;
-                }
                 else if (_name.Length < 16)
                 {
                     var ch = KeyToChar(key, shift: IsShiftDown(kb));
@@ -101,11 +87,10 @@ namespace CraftingCreatureWorld.GameUI.Screens
                 r.FillRect(new Rectangle(box.X + 78 + (int)r.Measure(display).X, box.Y + 12, 2, 28), Theme.Accent);
 
             var startBtn = new Rectangle((int)cx - 120, 400, 240, 56);
-            r.Button(startBtn, "Start Adventure", ctx.Input, Keys.Enter, accent: true);
+            r.Button(startBtn, "Start Adventure", ctx.Input, accent: true);
 
             r.CenteredText("Your three starter creatures arrive tomorrow morning...",
                            cx, 500, Theme.TextDim, scale: 0.9f);
-            r.CenteredText(HotkeyHelp, cx, vp.Height - 40, Theme.TextDim, scale: 0.9f);
         }
     }
 }

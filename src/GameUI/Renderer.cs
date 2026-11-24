@@ -2,13 +2,11 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 namespace CraftingCreatureWorld.GameUI
 {
     /// <summary>
     /// Minimal immediate-mode UI built on top of MonoGame: text rendering with
-    /// automatic word wrap, rounded panels, progress bars and clickable buttons
-    /// that can show a hot-key badge.
+    /// automatic word wrap, rounded panels, progress bars and clickable buttons.
     /// </summary>
     public sealed class Renderer
     {
@@ -129,11 +127,9 @@ namespace CraftingCreatureWorld.GameUI
         // ---------- widgets ----------
 
         /// <summary>
-        /// Draws a button and returns true when it is activated by either a
-        /// mouse click or its hot key. When a hotkey is supplied a small badge
-        /// showing the key is painted in the button's top-left corner.
+        /// Draws a button and returns true when it is clicked with the mouse.
         /// </summary>
-        public bool Button(Rectangle bounds, string label, InputState input, Keys? hotkey = null,
+        public bool Button(Rectangle bounds, string label, InputState input,
                            bool enabled = true, bool accent = false, string? subLabel = null)
         {
             var hover = bounds.Contains(input.MousePosition) && enabled;
@@ -166,41 +162,14 @@ namespace CraftingCreatureWorld.GameUI
                      enabled ? Theme.TextDim : Theme.PanelDisabled, scale: 0.8f);
             }
 
-            // hot-key badge
-            if (hotkey.HasValue)
-            {
-                DrawHotkeyBadge(new Point(bounds.X + 6, bounds.Y + 6), KeyName(hotkey.Value), enabled);
-            }
-
             if (!enabled) return false;
-            return pressed || input.WasPressed(hotkey);
+            return pressed;
         }
 
-        public void DrawHotkeyBadge(Point position, string key, bool enabled = true)
-        {
-            var size = Measure(key) * 0.8f;
-            var badge = new Rectangle(position.X, position.Y, (int)size.X + 12, (int)size.Y + 8);
-            FillRoundRect(badge, 5, enabled ? Theme.HotkeyBadge : Theme.PanelDisabled);
-            StrokeRect(badge, 1, enabled ? Theme.Accent * 0.9f : Theme.TextDim * 0.4f);
-            Text(key, badge.X + 6, badge.Y + 3, enabled ? Color.White : Theme.TextDim, bold: true, scale: 0.8f);
-        }
-
-        public static string KeyName(Keys key) => key switch
-        {
-            Keys.D0 => "0", Keys.D1 => "1", Keys.D2 => "2", Keys.D3 => "3", Keys.D4 => "4",
-            Keys.D5 => "5", Keys.D6 => "6", Keys.D7 => "7", Keys.D8 => "8", Keys.D9 => "9",
-            Keys.Back => "Back", Keys.Enter => "Enter", Keys.Escape => "Esc",
-            Keys.Space => "Space", Keys.Up => "Up", Keys.Down => "Down",
-            Keys.Left => "Left", Keys.Right => "Right",
-            _ => key.ToString()
-        };
-
-        /// <summary>Scrollable list of buttons; wheel + Up/Down keys move the view.</summary>
+        /// <summary>Scrollable list of buttons; the mouse wheel moves the view.</summary>
         public void BeginScrollRegion(InputState input, int itemCount, int visibleRows, ref int scrollOffset)
         {
             scrollOffset += input.ScrollWheelDelta / 120 * visibleRows;
-            if (input.IsDown(Keys.Down)) scrollOffset += 1;
-            if (input.IsDown(Keys.Up)) scrollOffset -= 1;
             scrollOffset = Math.Clamp(scrollOffset, 0, Math.Max(0, itemCount - visibleRows));
         }
 
@@ -230,7 +199,6 @@ namespace CraftingCreatureWorld.GameUI
         public static readonly Color Red = new(235, 90, 90);
         public static readonly Color Green = new(110, 220, 130);
         public static readonly Color TextDim = new(150, 155, 175);
-        public static readonly Color HotkeyBadge = new(30, 34, 48);
         public static readonly Color HealthBar = new(225, 85, 85);
         public static readonly Color HappinessBar = new(250, 200, 80);
     }

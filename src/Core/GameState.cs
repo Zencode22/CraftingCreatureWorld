@@ -38,7 +38,6 @@ namespace CraftingCreatureWorld.Core
     /// <summary>Anything drawn and updated each frame implements this.</summary>
     public interface IScreen
     {
-        string HotkeyHelp { get; }
         void Update(ScreenContext ctx);
         void Draw(ScreenContext ctx);
     }

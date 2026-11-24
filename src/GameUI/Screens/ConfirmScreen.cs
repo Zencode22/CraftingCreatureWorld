@@ -2,13 +2,11 @@ using System;
 using CraftingCreatureWorld.Core;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>
-    /// Yes/confirm dialog. Hot keys: [Y] confirm, [N]/[Esc] cancel. Both the
-    /// buttons and the keys trigger the same action.
+    /// Yes/no confirmation dialog.
     /// </summary>
     public sealed class ConfirmScreen : IScreen
     {
@@ -23,14 +21,8 @@ namespace CraftingCreatureWorld.GameUI.Screens
             _onYes = onYes;
         }
 
-        public string HotkeyHelp => "[Y] Yes   [N] No";
-
         public void Update(ScreenContext ctx)
         {
-            if (ctx.Input.WasPressed(Keys.N) || ctx.Input.WasPressed(Keys.Escape))
-                ctx.Navigate?.Invoke(new MainMenuScreen());
-            else if (ctx.Input.WasPressed(Keys.Y))
-                _onYes(ctx);
         }
 
         public void Draw(ScreenContext ctx)
@@ -54,13 +46,11 @@ namespace CraftingCreatureWorld.GameUI.Screens
             var yesBtn = new Rectangle((int)(vp.Width / 2 - bw - gap / 2), panel.Bottom - 80, (int)bw, (int)bh);
             var noBtn = new Rectangle((int)(vp.Width / 2 + gap / 2), yesBtn.Y, (int)bw, (int)bh);
 
-            if (r.Button(yesBtn, "Yes", ctx.Input, Keys.Y, accent: true))
+            if (r.Button(yesBtn, "Yes", ctx.Input, accent: true))
                 _onYes(ctx);
 
-            if (r.Button(noBtn, "No", ctx.Input, Keys.N))
+            if (r.Button(noBtn, "No", ctx.Input))
                 ctx.Navigate?.Invoke(new MainMenuScreen());
-
-            r.CenteredText(HotkeyHelp, vp.Width / 2f, vp.Height - 36, Theme.TextDim, scale: 0.9f);
         }
     }
 }

@@ -1,13 +1,12 @@
 using CraftingCreatureWorld.Core;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>
     /// Shown after any action that advances the day. Summarises earnings and
-    /// per-creature stat changes. Hot keys: [Enter]/[Space] continue, [Esc] to menu.
+    /// per-creature stat changes.
     /// </summary>
     public sealed class DayReportScreen : IScreen
     {
@@ -20,14 +19,8 @@ namespace CraftingCreatureWorld.GameUI.Screens
             _returnTo = returnTo;
         }
 
-        public string HotkeyHelp => "[Enter] Continue   [Esc] Main menu";
-
         public void Update(ScreenContext ctx)
         {
-            if (ctx.Input.WasPressed(Keys.Enter) || ctx.Input.WasPressed(Keys.Space))
-                ctx.Navigate?.Invoke(_returnTo);
-            else if (ctx.Input.WasPressed(Keys.Escape))
-                ctx.Navigate?.Invoke(new MainMenuScreen());
         }
 
         public void Draw(ScreenContext ctx)
@@ -83,11 +76,14 @@ namespace CraftingCreatureWorld.GameUI.Screens
                 y += 24;
             }
 
-            var contBtn = new Rectangle(vp.Width / 2 - 130, vp.Height - 78, 260, 44);
-            if (r.Button(contBtn, "Continue", ctx.Input, Keys.Enter, accent: true))
+            const float bw = 220, gap = 16;
+            float bx = vp.Width / 2f - bw - gap / 2;
+            var contBtn = new Rectangle((int)bx, vp.Height - 78, (int)bw, 44);
+            var menuBtn = new Rectangle((int)(bx + bw + gap), vp.Height - 78, (int)bw, 44);
+            if (r.Button(contBtn, "Continue", ctx.Input, accent: true))
                 ctx.Navigate?.Invoke(_returnTo);
-
-            r.CenteredText(HotkeyHelp, vp.Width / 2f, vp.Height - 28, Theme.TextDim, scale: 0.9f);
+            if (r.Button(menuBtn, "Main Menu", ctx.Input))
+                ctx.Navigate?.Invoke(new MainMenuScreen());
         }
     }
 }

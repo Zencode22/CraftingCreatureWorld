@@ -4,13 +4,12 @@ using CraftingEngine;
 using CreatureWorld;
 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace CraftingCreatureWorld.GameUI.Screens
 {
     /// <summary>
-    /// Detail page for one creature. Hot keys: [P] Play, [F] Feed (opens the
-    /// pantry picker), [Esc] back to the roster.
+    /// Detail page for one creature. Play with it, feed it (opens the pantry
+    /// picker) or go back to the roster.
     /// </summary>
     public sealed class CreatureDetailScreen : IScreen
     {
@@ -18,16 +17,8 @@ namespace CraftingCreatureWorld.GameUI.Screens
 
         public CreatureDetailScreen(Creature creature) => _creature = creature;
 
-        public string HotkeyHelp => "[P] Play   [F] Feed   [Esc] Back";
-
         public void Update(ScreenContext ctx)
         {
-            if (ctx.Input.WasPressed(Keys.Escape))
-                ctx.Navigate?.Invoke(new CreatureListScreen());
-            else if (ctx.Input.WasPressed(Keys.P))
-                DoPlay(ctx);
-            else if (ctx.Input.WasPressed(Keys.F))
-                ctx.Navigate?.Invoke(new FoodPickerScreen(_creature));
         }
 
         private void DoPlay(ScreenContext ctx)
@@ -91,15 +82,17 @@ namespace CraftingCreatureWorld.GameUI.Screens
             var playBtn = new Rectangle((int)x, (int)btnY, (int)Math.Min(bw2, w / 2 - 8), (int)bh);
             var feedBtn = new Rectangle(playBtn.Right + 16, (int)btnY, playBtn.Width, (int)bh);
 
-            if (r.Button(playBtn, "Play with creature", ctx.Input, Keys.P, accent: true,
+            if (r.Button(playBtn, "Play with creature", ctx.Input, accent: true,
                     subLabel: "+Happiness, ends the day"))
                 DoPlay(ctx);
 
-            if (r.Button(feedBtn, "Feed...", ctx.Input, Keys.F, enabled: foodCount > 0,
+            if (r.Button(feedBtn, "Feed...", ctx.Input, enabled: foodCount > 0,
                     subLabel: foodCount > 0 ? $"{foodCount} item(s) in pantry" : "Pantry empty - craft some food!"))
                 ctx.Navigate?.Invoke(new FoodPickerScreen(_creature));
 
-            r.CenteredText(HotkeyHelp, vp.Width / 2f, vp.Height - 36, Theme.TextDim, scale: 0.9f);
+            var backBtn = new Rectangle(24, vp.Height - 58, 200, 42);
+            if (r.Button(backBtn, "Back to Roster", ctx.Input))
+                ctx.Navigate?.Invoke(new CreatureListScreen());
         }
     }
 }

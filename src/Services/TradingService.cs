@@ -45,7 +45,7 @@ namespace CraftingCreatureWorld.Services
             foreach (var ingredient in activeRecipe.Ingredients)
             {
                 decimal price = GetIngredientPrice(ingredient.Item);
-                items.Add((ingredient.Item, price, "∞"));
+                items.Add((ingredient.Item, price, "Unlimited"));
             }
             
             return items;
